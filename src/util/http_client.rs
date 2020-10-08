@@ -1,19 +1,20 @@
 use reqwest;
 
-use super::http_response::HttpResponse;
-
 pub struct HttpClient {
 }
 
+#[derive(PartialEq)]
+#[derive(Debug)]
 pub struct HttpError {
-    errorMessage : String,
-    httpResponseCode : Option<i32>
+    pub errorMessage : String,
+    pub httpResponseCode : Option<u16>
 }
 
 impl HttpError {
 
 }
 
+// TODO: this class does not make sense. If it's only used once merge with league_api
 /**
  * Class to handle HTTP calls. Basically just a wrapper for an external HTTP client, to make management/changes easier
 */
@@ -23,17 +24,17 @@ impl HttpClient {
 
         return match http_result {
             Ok(result) => {
-                if result.status() == 401 {
+                if result.status() == 200 {
+                    Result::Ok(String::from(result.text().unwrap()))
+                } else if result.status() == 401 {
                     Result::Err(HttpError{ errorMessage: String::from("Unauthorized access to application"),
                         httpResponseCode: Some(401) })
-                } else {
-                    println!("+++++++++++++++++++++++");
-                    println!("{:#?}", result);
-                    println!("{:#?}", result.status());
-                    println!("+++++++++++++++++++++++");
-                    //let rez : HttpResponse = serde_json::from_str(&zz2).expect("JSON not well formatted");
-                    //println!("{:#?}", rez);
-                    Result::Ok(String::from("ggnore"))
+                } else if result.status() == 403 {
+                    Result::Err(HttpError{ errorMessage: String::from("Forbidden access to application. Check if API key has expired"),
+                        httpResponseCode: Some(403) })
+                }else {
+                    Result::Err(HttpError{ errorMessage: String::from("Error in http request"),
+                        httpResponseCode: Some(result.status().as_u16()) })
                 }
             },
             Err(error) => {

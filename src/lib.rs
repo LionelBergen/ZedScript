@@ -8,5 +8,4 @@ pub mod api_structs {
 
 pub mod util {
     pub mod http_client;
-    pub mod http_response;
 }

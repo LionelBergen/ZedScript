@@ -1,5 +1,6 @@
 use super::api_structs::lol_api_key::LolApiKey;
 use super::util::http_client::HttpClient;
+use crate::util::http_client::HttpError;
 
 pub struct RiotApi {
 }
@@ -14,9 +15,10 @@ impl RiotApi {
             .replace("%apikey%", &*lol_api_key.api_key);
     }
 
-    pub fn get_status(lol_api_key : &LolApiKey) {
+    pub fn get_status(lol_api_key : &LolApiKey) -> Result<String, HttpError> {
         let url : String = Self::get_url_from_api_key(RiotApi::GET_STATUS_URL, lol_api_key);
-        HttpClient::get(url);
+
+        return HttpClient::get(url);
 
 
         //return resp.get(""); // String::from(resp);
