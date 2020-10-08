@@ -19,8 +19,5 @@ impl RiotApi {
         let url : String = Self::get_url_from_api_key(RiotApi::GET_STATUS_URL, lol_api_key);
 
         return HttpClient::get(url);
-
-
-        //return resp.get(""); // String::from(resp);
     }
 }

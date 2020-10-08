@@ -6,8 +6,8 @@ pub struct HttpClient {
 #[derive(PartialEq)]
 #[derive(Debug)]
 pub struct HttpError {
-    pub errorMessage : String,
-    pub httpResponseCode : Option<u16>
+    pub error_message : String,
+    pub http_response_code : Option<u16>
 }
 
 impl HttpError {
@@ -27,18 +27,18 @@ impl HttpClient {
                 if result.status() == 200 {
                     Result::Ok(String::from(result.text().unwrap()))
                 } else if result.status() == 401 {
-                    Result::Err(HttpError{ errorMessage: String::from("Unauthorized access to application"),
-                        httpResponseCode: Some(401) })
+                    Result::Err(HttpError{ error_message: String::from("Unauthorized access to application"),
+                        http_response_code: Some(401) })
                 } else if result.status() == 403 {
-                    Result::Err(HttpError{ errorMessage: String::from("Forbidden access to application. Check if API key has expired"),
-                        httpResponseCode: Some(403) })
+                    Result::Err(HttpError{ error_message: String::from("Forbidden access to application. Check if API key has expired"),
+                        http_response_code: Some(403) })
                 }else {
-                    Result::Err(HttpError{ errorMessage: String::from("Error in http request"),
-                        httpResponseCode: Some(result.status().as_u16()) })
+                    Result::Err(HttpError{ error_message: String::from("Error in http request"),
+                        http_response_code: Some(result.status().as_u16()) })
                 }
             },
             Err(error) => {
-                Result::Err(HttpError { errorMessage: error.to_string(), httpResponseCode: None })
+                Result::Err(HttpError { error_message: error.to_string(), http_response_code: None })
             }
         };
     }
