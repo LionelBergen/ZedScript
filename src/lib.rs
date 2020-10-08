@@ -5,3 +5,8 @@ pub mod api_structs {
     pub mod lol_api_key;
     pub mod lol_region;
 }
+
+pub mod util {
+    pub mod http_client;
+    pub mod http_response;
+}
