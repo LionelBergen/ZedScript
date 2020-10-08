@@ -19,7 +19,7 @@ fn pause_execution() {
 }
 
 #[test]
-fn get_status_unauthorized() {
+fn test_get_status_unauthorized() {
     // no api key specified, expect unauthorized response
     let lol_api_key = LolApiKey {api_key: String::from(""), region: Region::NA, fully_load_classes: true};
     let result = riot_api::RiotApi::get_status(&lol_api_key);
@@ -29,10 +29,22 @@ fn get_status_unauthorized() {
 }
 
 #[test]
-fn get_status() {
+fn test_get_status() {
     let lol_api_key = LolApiKey {api_key: get_league_api_token(), region: Region::NA, fully_load_classes: true};
     let result = riot_api::RiotApi::get_status(&lol_api_key);
 
     assert!(result.unwrap().contains("active"));
+    pause_execution();
+}
+
+#[test]
+fn test_get_summoner() {
+    let lol_api_key = LolApiKey {api_key: get_league_api_token(), region: Region::NA, fully_load_classes: true};
+    let result = riot_api::RiotApi::get_summoner(String::from("LeagueOfSausage"), &lol_api_key);
+
+    println!("{:#?}", result);
+    let league_account_result = result.unwrap();
+    assert_eq!("LeagueOfSausage", league_account_result.name);
+    assert_eq!(106, league_account_result.summoner_level);
     pause_execution();
 }
