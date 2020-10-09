@@ -1,6 +1,7 @@
 use crate::api_structs::lol_account::LeagueAccount;
 use crate::api_structs::lol_api_key::LolApiKey;
 use crate::api_structs::lol_game::GameList;
+use crate::api_structs::lol_match_list::MatchList;
 use crate::util::http_client::HttpClient;
 use crate::util::http_error::HttpError;
 
@@ -14,6 +15,7 @@ impl RiotApi {
     const GET_THIRD_PARTY_CODE_URL: &'static str = "https://%region%.api.riotgames.com/lol/platform/v4/third-party-code/by-summoner/%summonerid%?api_key=%apikey%";
     const GET_FEATURED_GAMES_URL: &'static str =
         "https://%region%.api.riotgames.com/lol/spectator/v4/featured-games?api_key=%apikey%";
+    const GET_MATCHLIST_URL: &'static str = "https://%region%.api.riotgames.com/lol/match/v4/matchlists/by-account/%accountid%?api_key=%apikey%";
 
     pub fn get_status(lol_api_key: &LolApiKey) -> Result<String, HttpError> {
         let url: String = Self::get_url_from_api_key(RiotApi::GET_STATUS_URL, lol_api_key);
@@ -40,6 +42,28 @@ impl RiotApi {
             Ok(result) => {
                 println!("{}", result);
                 let league_game_result: GameList = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_match_list(
+        account_id: &str,
+        lol_api_key: &LolApiKey,
+    ) -> Result<MatchList, HttpError> {
+        let url: String = Self::get_url_from_api_key_with_account_id(
+            RiotApi::GET_MATCHLIST_URL,
+            lol_api_key,
+            account_id,
+        );
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                println!("{}", result);
+                let league_game_result: MatchList = serde_json::from_str(&result).unwrap();
 
                 Ok(league_game_result)
             }
@@ -81,5 +105,13 @@ impl RiotApi {
         name: String,
     ) -> String {
         Self::get_url_from_api_key(original_url, lol_api_key).replace("%name%", name.as_str())
+    }
+
+    fn get_url_from_api_key_with_account_id(
+        original_url: &str,
+        lol_api_key: &LolApiKey,
+        account_id: &str,
+    ) -> String {
+        Self::get_url_from_api_key(original_url, lol_api_key).replace("%accountid%", account_id)
     }
 }

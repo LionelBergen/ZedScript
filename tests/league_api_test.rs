@@ -8,6 +8,9 @@ use std::env;
 use zed_script::api_structs::lol_account::LeagueAccount;
 use zed_script::util::http_error::HttpError;
 
+// LeagueOfSausage account id
+const LEAGUE_ACCOUNT_ID: &str = "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY";
+
 fn get_league_api_token() -> String {
     return String::from(&env::var("LEAGUE_API_KEY").unwrap());
 }
@@ -62,6 +65,10 @@ fn test_get_summoner() {
     let league_account_result: LeagueAccount = result.unwrap();
     assert_eq!("LeagueOfSausage", league_account_result.name);
     assert_eq!(106, league_account_result.summoner_level);
+    assert_eq!(
+        "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY",
+        league_account_result.account_id
+    );
     pause_execution();
 }
 
@@ -110,6 +117,19 @@ fn test_get_featured_games() {
     };
 
     let result = riot_api::RiotApi::get_featured_games(&lol_api_key);
+    assert!(result.is_ok());
+    pause_execution();
+}
+
+#[test]
+fn test_get_match_list() {
+    let lol_api_key = LolApiKey {
+        api_key: get_league_api_token(),
+        region: Region::NA,
+        fully_load_classes: true,
+    };
+
+    let result = riot_api::RiotApi::get_match_list(LEAGUE_ACCOUNT_ID, &lol_api_key);
     assert!(result.is_ok());
     pause_execution();
 }
