@@ -15,6 +15,13 @@ fn get_league_api_token() -> String {
     return String::from(&env::var("LEAGUE_API_KEY").unwrap());
 }
 
+fn get_league_api_key() -> LolApiKey {
+    LolApiKey {
+        api_key: get_league_api_token(),
+        region: Region::NA,
+    }
+}
+
 /**
  * To avoid rate limiting
 */
@@ -26,9 +33,8 @@ fn pause_execution() {
 fn test_get_status_unauthorized() {
     // no api key specified, expect unauthorized response
     let lol_api_key = LolApiKey {
-        api_key: String::from(""),
-        region: Region::NA,
-        fully_load_classes: true,
+        api_key: "".to_string(),
+        region: Region::RU,
     };
     let result = riot_api::RiotApi::get_status(&lol_api_key);
     let expected = HttpError {
@@ -41,11 +47,7 @@ fn test_get_status_unauthorized() {
 
 #[test]
 fn test_get_status() {
-    let lol_api_key = LolApiKey {
-        api_key: get_league_api_token(),
-        region: Region::NA,
-        fully_load_classes: true,
-    };
+    let lol_api_key = get_league_api_key();
     let result = riot_api::RiotApi::get_status(&lol_api_key);
 
     assert!(result.unwrap().contains("active"));
@@ -54,11 +56,7 @@ fn test_get_status() {
 
 #[test]
 fn test_get_summoner() {
-    let lol_api_key = LolApiKey {
-        api_key: get_league_api_token(),
-        region: Region::NA,
-        fully_load_classes: true,
-    };
+    let lol_api_key = get_league_api_key();
     let result = riot_api::RiotApi::get_summoner(String::from("LeagueOfSausage"), &lol_api_key);
 
     // No need to assert NotNull, values are non-optional
@@ -74,11 +72,7 @@ fn test_get_summoner() {
 
 #[test]
 fn test_get_summoner_not_exist() {
-    let lol_api_key = LolApiKey {
-        api_key: get_league_api_token(),
-        region: Region::NA,
-        fully_load_classes: true,
-    };
+    let lol_api_key = get_league_api_key();
     let result = riot_api::RiotApi::get_summoner(String::from("LeagueOfSausage22"), &lol_api_key);
     let expected = HttpError {
         error_message: "Error in http request".to_string(),
@@ -92,11 +86,7 @@ fn test_get_summoner_not_exist() {
 
 #[test]
 fn test_get_third_party_code() {
-    let lol_api_key = LolApiKey {
-        api_key: get_league_api_token(),
-        region: Region::NA,
-        fully_load_classes: true,
-    };
+    let lol_api_key = get_league_api_key();
 
     let result = riot_api::RiotApi::get_third_party_code("123", &lol_api_key);
     let expected = HttpError {
@@ -110,11 +100,7 @@ fn test_get_third_party_code() {
 
 #[test]
 fn test_get_featured_games() {
-    let lol_api_key = LolApiKey {
-        api_key: get_league_api_token(),
-        region: Region::NA,
-        fully_load_classes: true,
-    };
+    let lol_api_key = get_league_api_key();
 
     let result = riot_api::RiotApi::get_featured_games(&lol_api_key);
     assert!(result.is_ok());
@@ -123,11 +109,7 @@ fn test_get_featured_games() {
 
 #[test]
 fn test_get_match_list() {
-    let lol_api_key = LolApiKey {
-        api_key: get_league_api_token(),
-        region: Region::NA,
-        fully_load_classes: true,
-    };
+    let lol_api_key = get_league_api_key();
 
     let result = riot_api::RiotApi::get_match_list(LEAGUE_ACCOUNT_ID, &lol_api_key);
     assert!(result.is_ok());

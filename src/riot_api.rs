@@ -11,12 +11,13 @@ impl RiotApi {
     const SUMMONER_BY_NAME_URL: &'static str = "https://%region%.api.riotgames.com/lol/summoner/v4/summoners/by-name/%name%?api_key=%apikey%";
     const GET_STATUS_URL: &'static str =
         "https://%region%.api.riotgames.com/lol/status/v3/shard-data?api_key=%apikey%";
+
     // THIRD_PARTY_CODE-V4
     const GET_THIRD_PARTY_CODE_URL: &'static str = "https://%region%.api.riotgames.com/lol/platform/v4/third-party-code/by-summoner/%summonerid%?api_key=%apikey%";
     const GET_FEATURED_GAMES_URL: &'static str =
         "https://%region%.api.riotgames.com/lol/spectator/v4/featured-games?api_key=%apikey%";
+
     // MATCH-V4
-    //const GET_MATCH_BY_TOURNAMENT_CODE_URL: &'static str = "https://%region%.api.riotgames.com/lol/match/v4/matches/by-tournament-code/%tournamentcode%/ids?api_key=%apikey%";
     const GET_MATCHLIST_URL: &'static str = "https://%region%.api.riotgames.com/lol/match/v4/matchlists/by-account/%accountid%?api_key=%apikey%";
 
     // TODO: Change to not-stub
@@ -75,32 +76,6 @@ impl RiotApi {
             Err(error) => Err(error),
         }
     }
-
-    //pub fn get_tournament_codes
-
-    /*
-    pub fn get_match_by_tournament_code(
-        account_id: &str,
-        lol_api_key: &LolApiKey,
-        tournament_code: &str
-    ) -> Result<Match, HttpError> {
-        let url: String = Self::get_url_from_api_key_with_account_id(
-            RiotApi::GET_MATCHLIST_URL,
-            lol_api_key,
-            account_id,
-        );
-        let http_result = HttpClient::get(url);
-
-        match http_result {
-            Ok(result) => {
-                println!("{}", result);
-                let league_game_result: MatchList = serde_json::from_str(&result).unwrap();
-
-                Ok(league_game_result)
-            }
-            Err(error) => Err(error),
-        }
-    }*/
 
     pub fn get_summoner(
         summoner_name: String,
