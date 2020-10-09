@@ -1,20 +1,9 @@
 use reqwest;
+use crate::util::http_error::HttpError;
 
 pub struct HttpClient {
 }
 
-#[derive(PartialEq)]
-#[derive(Debug)]
-pub struct HttpError {
-    pub error_message : String,
-    pub http_response_code : Option<u16>
-}
-
-impl HttpError {
-
-}
-
-// TODO: this class does not make sense. If it's only used once merge with league_api
 /**
  * Class to handle HTTP calls. Basically just a wrapper for an external HTTP client, to make management/changes easier
 */

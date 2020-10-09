@@ -1,7 +1,7 @@
-use super::api_structs::lol_api_key::LolApiKey;
-use super::api_structs::lol_account::LeagueAccount;
-use super::util::http_client::HttpClient;
-use crate::util::http_client::HttpError;
+use crate::api_structs::lol_api_key::LolApiKey;
+use crate::api_structs::lol_account::LeagueAccount;
+use crate::util::http_client::HttpClient;
+use crate::util::http_error::HttpError;
 
 pub struct RiotApi {
 }
@@ -34,10 +34,6 @@ impl RiotApi {
 
         if http_result.is_ok() {
             let league_account : LeagueAccount = serde_json::from_str(&http_result.unwrap()).unwrap();
-
-            println!("++++++++++++++++++++");
-            println!("{:#?}", league_account);
-            println!("++++++++++++++++++++");
 
             return Ok(league_account);
         } else {

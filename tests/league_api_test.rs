@@ -4,7 +4,7 @@ use zed_script::riot_api;
 use zed_script::api_structs::lol_api_key::LolApiKey;
 use zed_script::api_structs::lol_region::Region;
 
-use zed_script::util::http_client::HttpError;
+use zed_script::util::http_error::HttpError;
 use std::env;
 
 fn get_league_api_token() -> String {
