@@ -14,3 +14,9 @@ pub struct LeagueAccount {
     #[serde(rename="summonerLevel")]
     pub summoner_level: i32
 }
+
+impl PartialEq for LeagueAccount {
+    fn eq(&self, other: &Self) -> bool {
+        return self.id == other.id && self.account_id == other.account_id && self.name == other.name;
+    }
+}
