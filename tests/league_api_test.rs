@@ -82,3 +82,34 @@ fn test_get_summoner_not_exist() {
     assert_eq!(Err(expected), result);
     pause_execution();
 }
+
+#[test]
+fn test_get_third_party_code() {
+    let lol_api_key = LolApiKey {
+        api_key: get_league_api_token(),
+        region: Region::NA,
+        fully_load_classes: true,
+    };
+
+    let result = riot_api::RiotApi::get_third_party_code("123", &lol_api_key);
+    let expected = HttpError {
+        error_message: "Error in http request".to_string(),
+        http_response_code: Some(400),
+    };
+
+    assert_eq!(Err(expected), result);
+    pause_execution();
+}
+
+#[test]
+fn test_get_featured_games() {
+    let lol_api_key = LolApiKey {
+        api_key: get_league_api_token(),
+        region: Region::NA,
+        fully_load_classes: true,
+    };
+
+    let result = riot_api::RiotApi::get_featured_games(&lol_api_key);
+    assert!(result.is_ok());
+    pause_execution();
+}

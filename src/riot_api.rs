@@ -1,5 +1,6 @@
 use crate::api_structs::lol_account::LeagueAccount;
 use crate::api_structs::lol_api_key::LolApiKey;
+use crate::api_structs::lol_game::GameList;
 use crate::util::http_client::HttpClient;
 use crate::util::http_error::HttpError;
 
@@ -9,11 +10,41 @@ impl RiotApi {
     const SUMMONER_BY_NAME_URL: &'static str = "https://%region%.api.riotgames.com/lol/summoner/v4/summoners/by-name/%name%?api_key=%apikey%";
     const GET_STATUS_URL: &'static str =
         "https://%region%.api.riotgames.com/lol/status/v3/shard-data?api_key=%apikey%";
+    // THIRD_PARTY_CODE-V4
+    const GET_THIRD_PARTY_CODE_URL: &'static str = "https://%region%.api.riotgames.com/lol/platform/v4/third-party-code/by-summoner/%summonerid%?api_key=%apikey%";
+    const GET_FEATURED_GAMES_URL: &'static str =
+        "https://%region%.api.riotgames.com/lol/spectator/v4/featured-games?api_key=%apikey%";
 
     pub fn get_status(lol_api_key: &LolApiKey) -> Result<String, HttpError> {
         let url: String = Self::get_url_from_api_key(RiotApi::GET_STATUS_URL, lol_api_key);
 
         HttpClient::get(url)
+    }
+
+    pub fn get_third_party_code(
+        encrypted_summoner_id: &str,
+        lol_api_key: &LolApiKey,
+    ) -> Result<String, HttpError> {
+        let url: String =
+            Self::get_url_from_api_key(RiotApi::GET_THIRD_PARTY_CODE_URL, lol_api_key)
+                .replace("%summonerid%", encrypted_summoner_id);
+
+        HttpClient::get(url)
+    }
+
+    pub fn get_featured_games(lol_api_key: &LolApiKey) -> Result<GameList, HttpError> {
+        let url: String = Self::get_url_from_api_key(RiotApi::GET_FEATURED_GAMES_URL, lol_api_key);
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                println!("{}", result);
+                let league_game_result: GameList = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
     }
 
     pub fn get_summoner(

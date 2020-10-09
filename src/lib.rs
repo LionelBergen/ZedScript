@@ -4,6 +4,8 @@ pub use riot_api::*;
 pub mod api_structs {
     pub mod lol_account;
     pub mod lol_api_key;
+    pub mod lol_game;
+    pub mod lol_participant;
     pub mod lol_region;
 }
 
