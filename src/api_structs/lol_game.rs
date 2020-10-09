@@ -33,9 +33,8 @@ pub struct Game {
     pub platform_id: String,
     #[serde(rename = "gameTypeConfigId")]
     pub game_type_config: i64,
-    // TODO: figure out what this returns
-    //#[serde(rename="bannedChampions")]
-    //pub banned_champions: Vec,
+    #[serde(rename = "bannedChampions")]
+    pub banned_champions: Vec<i64>,
     #[serde(rename = "gameStartTime")]
     pub game_start_time: i64,
     #[serde(rename = "gameLength")]
