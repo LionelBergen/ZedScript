@@ -16,6 +16,16 @@ pub struct GameObserver {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct BannedChampion {
+    #[serde(rename = "championId")]
+    pub champion_id: i16,
+    #[serde(rename = "teamId")]
+    pub team_id: i16,
+    #[serde(rename = "pickTurn")]
+    pub pick_turn: i8,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Game {
     #[serde(rename = "gameId")]
     pub game_id: i64,
@@ -34,7 +44,7 @@ pub struct Game {
     #[serde(rename = "gameTypeConfigId")]
     pub game_type_config: i64,
     #[serde(rename = "bannedChampions")]
-    pub banned_champions: Vec<i64>,
+    pub banned_champions: Vec<BannedChampion>,
     #[serde(rename = "gameStartTime")]
     pub game_start_time: i64,
     #[serde(rename = "gameLength")]
