@@ -1,4 +1,3 @@
-use reqwest;
 use crate::util::http_error::HttpError;
 
 pub struct HttpClient {
@@ -11,10 +10,10 @@ impl HttpClient {
     pub fn get(url : String) -> Result<String, HttpError> {
         let http_result = Self::http_get_result(url);
 
-        return match http_result {
+        match http_result {
             Ok(result) => {
                 if result.status() == 200 {
-                    Result::Ok(String::from(result.text().unwrap()))
+                    Result::Ok(result.text().unwrap())
                 } else if result.status() == 401 {
                     Result::Err(HttpError{ error_message: String::from("Unauthorized access to application"),
                         http_response_code: Some(401) })
@@ -29,10 +28,10 @@ impl HttpClient {
             Err(error) => {
                 Result::Err(HttpError { error_message: error.to_string(), http_response_code: None })
             }
-        };
+        }
     }
 
     fn http_get_result(url : String) -> Result<reqwest::blocking::Response, reqwest::Error> {
-        return reqwest::blocking::get(&url);
+        reqwest::blocking::get(&url)
     }
 }
