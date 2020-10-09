@@ -5,22 +5,22 @@ use zed_script::api_structs::lol_region::Region;
 
 #[test]
 fn equality_test() {
-    let x1 = LolApiKey{
+    let x1 = LolApiKey {
         api_key: "testapikey".to_string(),
         region: Region::RU,
-        fully_load_classes: false
+        fully_load_classes: false,
     };
 
-    let x2 = LolApiKey{
+    let x2 = LolApiKey {
         api_key: "testapikey".to_string(),
         region: Region::RU,
-        fully_load_classes: false
+        fully_load_classes: false,
     };
 
-    let x3 = LolApiKey{
+    let x3 = LolApiKey {
         api_key: "testapikey".to_string(),
         region: Region::RU,
-        fully_load_classes: true
+        fully_load_classes: true,
     };
 
     assert_eq!(x1, x2);

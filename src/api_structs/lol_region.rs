@@ -10,7 +10,7 @@ pub enum Region {
     EUW,
     TR,
     LAN,
-    LAS
+    LAS,
 }
 
 impl Region {
@@ -26,7 +26,7 @@ impl Region {
             Region::EUW => "euw1",
             Region::TR => "tr1",
             Region::LAN => "la1",
-            Region::LAS => "la2"
+            Region::LAS => "la2",
         }
     }
 }

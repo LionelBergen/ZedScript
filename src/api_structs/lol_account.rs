@@ -1,18 +1,18 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LeagueAccount {
     pub id: String,
-    #[serde(rename="accountId")]
+    #[serde(rename = "accountId")]
     pub account_id: String,
     pub puuid: String,
     pub name: String,
-    #[serde(rename="profileIconId")]
+    #[serde(rename = "profileIconId")]
     pub profile_icon_id: i32,
-    #[serde(rename="revisionDate")]
+    #[serde(rename = "revisionDate")]
     pub revision_date: i64,
-    #[serde(rename="summonerLevel")]
-    pub summoner_level: i32
+    #[serde(rename = "summonerLevel")]
+    pub summoner_level: i32,
 }
 
 impl PartialEq for LeagueAccount {

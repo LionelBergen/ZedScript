@@ -4,34 +4,34 @@ use zed_script::api_structs::lol_account::LeagueAccount;
 
 #[test]
 fn equality_test() {
-    let x1 = LeagueAccount{
+    let x1 = LeagueAccount {
         id: "123456".to_string(),
         account_id: "222".to_string(),
         puuid: "".to_string(),
         name: "username".to_string(),
         profile_icon_id: 0,
         revision_date: 0,
-        summoner_level: 0
+        summoner_level: 0,
     };
-    
-    let x2 = LeagueAccount{
+
+    let x2 = LeagueAccount {
         id: "123456".to_string(),
         account_id: "222".to_string(),
         puuid: "".to_string(),
         name: "username".to_string(),
         profile_icon_id: 0,
         revision_date: 0,
-        summoner_level: 0
+        summoner_level: 0,
     };
-    
-    let x3 = LeagueAccount{
+
+    let x3 = LeagueAccount {
         id: "different Id".to_string(),
         account_id: "111111".to_string(),
         puuid: "".to_string(),
         name: "different username".to_string(),
         profile_icon_id: 0,
         revision_date: 0,
-        summoner_level: 0
+        summoner_level: 0,
     };
 
     assert_eq!(x1, x2);
