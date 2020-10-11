@@ -55,6 +55,49 @@ fn test_get_status() {
 }
 
 #[test]
+fn test_get_summoner_by_account_id() {
+    let lol_api_key = get_league_api_key();
+    let result = riot_api::RiotApi::get_summoner_by_account_id(
+        "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY".to_string(),
+        &lol_api_key,
+    );
+
+    // No need to assert NotNull, values are non-optional
+    let league_account_result: LeagueAccount = result.unwrap();
+    assert_eq!("LeagueOfSausage", league_account_result.name);
+    pause_execution();
+}
+
+#[test]
+fn test_get_summoner_by_puuid_id() {
+    let lol_api_key = get_league_api_key();
+    let result = riot_api::RiotApi::get_summoner_by_puuid_id(
+        "PovRyqcBB-MYNAchL1945Gt0dGwJ1b0yOSzj7ArsRYQ5kiySs8UX4WN2Lsvjy1s-6ihupmzL1FvnIQ"
+            .to_string(),
+        &lol_api_key,
+    );
+
+    // No need to assert NotNull, values are non-optional
+    let league_account_result: LeagueAccount = result.unwrap();
+    assert_eq!("LeagueOfSausage", league_account_result.name);
+    pause_execution();
+}
+
+#[test]
+fn test_get_summoner_by_summoner_id() {
+    let lol_api_key = get_league_api_key();
+    let result = riot_api::RiotApi::get_summoner_by_summoner_id(
+        "n-zcEtpy2E4JUt8AksUMpkEB9SsBw51-6b6rDF27wvZ1YYw".to_string(),
+        &lol_api_key,
+    );
+
+    // No need to assert NotNull, values are non-optional
+    let league_account_result: LeagueAccount = result.unwrap();
+    assert_eq!("LeagueOfSausage", league_account_result.name);
+    pause_execution();
+}
+
+#[test]
 fn test_get_summoner() {
     let lol_api_key = get_league_api_key();
     let result = riot_api::RiotApi::get_summoner(String::from("LeagueOfSausage"), &lol_api_key);
