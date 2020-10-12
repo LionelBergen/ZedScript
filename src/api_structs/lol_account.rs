@@ -2,7 +2,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LeagueAccount {
-    pub id: String,
+    #[serde(rename = "id")]
+    pub summoner_id: String,
     #[serde(rename = "accountId")]
     pub account_id: String,
     pub puuid: String,
@@ -17,6 +18,7 @@ pub struct LeagueAccount {
 
 impl PartialEq for LeagueAccount {
     fn eq(&self, other: &Self) -> bool {
-        self.id == other.id && self.account_id == other.account_id && self.name == other.name
+        /*self.summoner_id == other.summoner_id && */
+        self.account_id == other.account_id && self.name == other.name
     }
 }

@@ -122,7 +122,6 @@ fn test_get_summoner_not_exist() {
         http_response_code: Some(404),
     };
 
-    println!("{:#?}", result);
     assert_eq!(Err(expected), result);
     pause_execution();
 }
@@ -146,6 +145,30 @@ fn test_get_featured_games() {
     let lol_api_key = get_league_api_key();
 
     let result = riot_api::RiotApi::get_featured_games(&lol_api_key);
+    assert!(result.is_ok());
+    pause_execution();
+}
+
+#[test]
+fn test_get_active_games() {
+    let lol_api_key = get_league_api_key();
+
+    let active_game_list = riot_api::RiotApi::get_featured_games(&lol_api_key);
+    assert!(active_game_list.is_ok());
+    pause_execution();
+
+    let summoner_name_in_active_game =
+        &active_game_list.unwrap().game_list[0].participants[0].summoner_name;
+
+    let summoner =
+        riot_api::RiotApi::get_summoner(summoner_name_in_active_game.to_string(), &lol_api_key);
+    assert!(summoner.is_ok());
+    pause_execution();
+
+    let summoner_id_active_in_game = summoner.unwrap();
+    let active_game_summoner_id = &summoner_id_active_in_game.summoner_id;
+
+    let result = riot_api::RiotApi::get_active_games(&active_game_summoner_id, &lol_api_key);
     assert!(result.is_ok());
     pause_execution();
 }

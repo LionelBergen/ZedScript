@@ -1,6 +1,6 @@
 use crate::api_structs::lol_account::LeagueAccount;
 use crate::api_structs::lol_api_key::LolApiKey;
-use crate::api_structs::lol_game::GameList;
+use crate::api_structs::lol_game::{Game, GameList};
 use crate::api_structs::lol_match_list::MatchList;
 use crate::util::http_client::HttpClient;
 use crate::util::http_error::HttpError;
@@ -12,11 +12,14 @@ impl RiotApi {
         "https://%region%.api.riotgames.com/lol/status/v3/shard-data?api_key=%apikey%";
 
     // THIRD_PARTY_CODE-V4
-    const GET_FEATURED_GAMES_URL: &'static str =
-        "https://%region%.api.riotgames.com/lol/spectator/v4/featured-games?api_key=%apikey%";
 
     // MATCH-V4
     const GET_MATCHLIST_URL: &'static str = "https://%region%.api.riotgames.com/lol/match/v4/matchlists/by-account/%accountid%?api_key=%apikey%";
+
+    // SPECTATOR-V4
+    const GET_ACTIVE_GAMES: &'static str = "https://%region%.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/%summonerid%?api_key=%apikey%";
+    const GET_FEATURED_GAMES_URL: &'static str =
+        "https://%region%.api.riotgames.com/lol/spectator/v4/featured-games?api_key=%apikey%";
 
     // SUMMONER-V4
     const GET_SUMMONER_BY_ACCOUNT_ID: &'static str = "https://%region%.api.riotgames.com/lol/summoner/v4/summoners/by-account/%accountid%?api_key=%apikey%";
@@ -52,8 +55,26 @@ impl RiotApi {
 
         match http_result {
             Ok(result) => {
-                println!("{}", result);
                 let league_game_result: GameList = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_active_games(summoner_id: &str, lol_api_key: &LolApiKey) -> Result<Game, HttpError> {
+        let url: String = Self::get_url_from_api_key_with_summoner_id(
+            RiotApi::GET_ACTIVE_GAMES,
+            lol_api_key,
+            summoner_id,
+        );
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                println!("{}", result);
+                let league_game_result: Game = serde_json::from_str(&result).unwrap();
 
                 Ok(league_game_result)
             }
