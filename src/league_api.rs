@@ -60,6 +60,27 @@ impl RiotApi {
         }
     }
 
+    pub fn get_champion_mastery_by_champion(lol_api_key: &LolApiKey, summoner_id: &str, champion_id: &str) -> Result<ChampionMasteryDto, HttpError> {
+        let url: String = LeagueUrl::get_champion_mastery_url_with_champion(lol_api_key, summoner_id, champion_id);
+
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let result: ChampionMasteryDto = serde_json::from_str(&result).unwrap();
+
+                Ok(result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_champion_mastery_score(lol_api_key: &LolApiKey, summoner_id: &str) -> Result<String, HttpError> {
+        let url: String = LeagueUrl::get_champion_mastery_score(lol_api_key, summoner_id);
+
+        HttpClient::get(url)
+    }
+
     pub fn get_third_party_code(
         encrypted_summoner_id: &str,
         lol_api_key: &LolApiKey,

@@ -68,6 +68,28 @@ fn test_get_champion_mastery() {
 }
 
 #[test]
+fn test_get_champion_mastery_by_champion() {
+    let lol_api_key = get_league_api_key();
+    // find LeagueOfSausage/DrMundo
+    let result = league_api::RiotApi::get_champion_mastery_by_champion(&lol_api_key, LEAGUE_SUMMONER_ID, "36");
+
+    let unwrapped_result = result.unwrap();
+    assert_eq!(LEAGUE_SUMMONER_ID, unwrapped_result.summoner_id);
+    pause_execution();
+}
+
+#[test]
+fn test_get_champion_mastery_score() {
+    let lol_api_key = get_league_api_key();
+    // find LeagueOfSausage/DrMundo
+    let result = league_api::RiotApi::get_champion_mastery_score(&lol_api_key, LEAGUE_SUMMONER_ID);
+
+    let unwrapped_result = result.unwrap();
+    assert_eq!("229", unwrapped_result);
+    pause_execution();
+}
+
+#[test]
 fn test_get_summoner_by_account_id() {
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_summoner_by_account_id(
