@@ -1,5 +1,5 @@
-pub mod riot_api;
-pub use riot_api::*;
+pub mod league_api;
+pub use league_api::*;
 
 pub mod api_structs {
     pub mod lol_account;

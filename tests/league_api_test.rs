@@ -2,7 +2,7 @@ extern crate zed_script;
 
 use zed_script::api_structs::lol_api_key::LolApiKey;
 use zed_script::api_structs::lol_region::Region;
-use zed_script::riot_api;
+use zed_script::league_api;
 
 use std::env;
 use zed_script::api_structs::lol_account::LeagueAccount;
@@ -37,7 +37,7 @@ fn test_get_status_unauthorized() {
         api_key: "".to_string(),
         region: Region::RU,
     };
-    let result = riot_api::RiotApi::get_status(&lol_api_key);
+    let result = league_api::RiotApi::get_status(&lol_api_key);
     let expected = HttpError {
         error_message: String::from("Unauthorized access to application"),
         http_response_code: Some(401),
@@ -49,7 +49,7 @@ fn test_get_status_unauthorized() {
 #[test]
 fn test_get_status() {
     let lol_api_key = get_league_api_key();
-    let result = riot_api::RiotApi::get_status(&lol_api_key);
+    let result = league_api::RiotApi::get_status(&lol_api_key);
 
     assert!(result.unwrap().contains("active"));
     pause_execution();
@@ -58,7 +58,7 @@ fn test_get_status() {
 #[test]
 fn test_get_summoner_by_account_id() {
     let lol_api_key = get_league_api_key();
-    let result = riot_api::RiotApi::get_summoner_by_account_id(
+    let result = league_api::RiotApi::get_summoner_by_account_id(
         "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY".to_string(),
         &lol_api_key,
     );
@@ -72,7 +72,7 @@ fn test_get_summoner_by_account_id() {
 #[test]
 fn test_get_summoner_by_puuid_id() {
     let lol_api_key = get_league_api_key();
-    let result = riot_api::RiotApi::get_summoner_by_puuid_id(
+    let result = league_api::RiotApi::get_summoner_by_puuid_id(
         "PovRyqcBB-MYNAchL1945Gt0dGwJ1b0yOSzj7ArsRYQ5kiySs8UX4WN2Lsvjy1s-6ihupmzL1FvnIQ"
             .to_string(),
         &lol_api_key,
@@ -87,7 +87,7 @@ fn test_get_summoner_by_puuid_id() {
 #[test]
 fn test_get_summoner_by_summoner_id() {
     let lol_api_key = get_league_api_key();
-    let result = riot_api::RiotApi::get_summoner_by_summoner_id(
+    let result = league_api::RiotApi::get_summoner_by_summoner_id(
         "n-zcEtpy2E4JUt8AksUMpkEB9SsBw51-6b6rDF27wvZ1YYw".to_string(),
         &lol_api_key,
     );
@@ -101,7 +101,7 @@ fn test_get_summoner_by_summoner_id() {
 #[test]
 fn test_get_summoner() {
     let lol_api_key = get_league_api_key();
-    let result = riot_api::RiotApi::get_summoner(String::from("LeagueOfSausage"), &lol_api_key);
+    let result = league_api::RiotApi::get_summoner(String::from("LeagueOfSausage"), &lol_api_key);
 
     // No need to assert NotNull, values are non-optional
     let league_account_result: LeagueAccount = result.unwrap();
@@ -117,7 +117,7 @@ fn test_get_summoner() {
 #[test]
 fn test_get_summoner_not_exist() {
     let lol_api_key = get_league_api_key();
-    let result = riot_api::RiotApi::get_summoner(String::from("LeagueOfSausage22"), &lol_api_key);
+    let result = league_api::RiotApi::get_summoner(String::from("LeagueOfSausage22"), &lol_api_key);
     let expected = HttpError {
         error_message: "Error in http request".to_string(),
         http_response_code: Some(404),
@@ -131,7 +131,7 @@ fn test_get_summoner_not_exist() {
 fn test_get_third_party_code() {
     let lol_api_key = get_league_api_key();
 
-    let result = riot_api::RiotApi::get_third_party_code("123", &lol_api_key);
+    let result = league_api::RiotApi::get_third_party_code("123", &lol_api_key);
     let expected = HttpError {
         error_message: "Error in http request".to_string(),
         http_response_code: Some(400),
@@ -145,7 +145,7 @@ fn test_get_third_party_code() {
 fn test_get_featured_games() {
     let lol_api_key = get_league_api_key();
 
-    let result = riot_api::RiotApi::get_featured_games(&lol_api_key);
+    let result = league_api::RiotApi::get_featured_games(&lol_api_key);
     assert!(result.is_ok());
     pause_execution();
 }
@@ -154,7 +154,7 @@ fn test_get_featured_games() {
 fn test_get_active_games() {
     let lol_api_key = get_league_api_key();
 
-    let active_game_list = riot_api::RiotApi::get_featured_games(&lol_api_key);
+    let active_game_list = league_api::RiotApi::get_featured_games(&lol_api_key);
     assert!(active_game_list.is_ok());
     pause_execution();
 
@@ -162,14 +162,14 @@ fn test_get_active_games() {
         &active_game_list.unwrap().game_list[0].participants[0].summoner_name;
 
     let summoner =
-        riot_api::RiotApi::get_summoner(summoner_name_in_active_game.to_string(), &lol_api_key);
+        league_api::RiotApi::get_summoner(summoner_name_in_active_game.to_string(), &lol_api_key);
     assert!(summoner.is_ok());
     pause_execution();
 
     let summoner_id_active_in_game = summoner.unwrap();
     let active_game_summoner_id = &summoner_id_active_in_game.summoner_id;
 
-    let result = riot_api::RiotApi::get_active_games(&active_game_summoner_id, &lol_api_key);
+    let result = league_api::RiotApi::get_active_games(&active_game_summoner_id, &lol_api_key);
     assert!(result.is_ok());
     pause_execution();
 }
@@ -178,7 +178,7 @@ fn test_get_active_games() {
 fn test_get_match() {
     let lol_api_key = get_league_api_key();
 
-    let result = riot_api::RiotApi::get_match(MATCH_ID, &lol_api_key);
+    let result = league_api::RiotApi::get_match(MATCH_ID, &lol_api_key);
     assert!(result.is_ok());
     pause_execution();
 }
@@ -187,7 +187,7 @@ fn test_get_match() {
 fn test_get_match_list() {
     let lol_api_key = get_league_api_key();
 
-    let result = riot_api::RiotApi::get_match_list(LEAGUE_ACCOUNT_ID, &lol_api_key);
+    let result = league_api::RiotApi::get_match_list(LEAGUE_ACCOUNT_ID, &lol_api_key);
     assert!(result.is_ok());
     pause_execution();
 }
