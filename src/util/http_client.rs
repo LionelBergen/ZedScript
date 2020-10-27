@@ -7,6 +7,8 @@ pub struct HttpClient {}
 */
 impl HttpClient {
     pub fn get(url: String) -> Result<String, HttpError> {
+        // TODO: remove
+        println!("Executing url: {}", url);
         let http_result = Self::http_get_result(url);
 
         match http_result {

@@ -23,7 +23,7 @@ pub struct LolParticipant {
     #[serde(rename = "skinIndex")]
     pub skin_id: Option<i64>,
     #[serde(rename = "profileIconId")]
-    pub profile_icon_id: i64,
+    pub profile_icon_id: Option<i64>,
     #[serde(rename = "summonerName")]
     pub summoner_name: String,
     pub bot: bool,

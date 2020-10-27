@@ -10,6 +10,7 @@ use zed_script::util::http_error::HttpError;
 
 // LeagueOfSausage account id
 const LEAGUE_ACCOUNT_ID: &str = "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY";
+const MATCH_ID: &str = "3609154837";
 
 fn get_league_api_token() -> String {
     return String::from(&env::var("LEAGUE_API_KEY").unwrap());
@@ -169,6 +170,15 @@ fn test_get_active_games() {
     let active_game_summoner_id = &summoner_id_active_in_game.summoner_id;
 
     let result = riot_api::RiotApi::get_active_games(&active_game_summoner_id, &lol_api_key);
+    assert!(result.is_ok());
+    pause_execution();
+}
+
+#[test]
+fn test_get_match() {
+    let lol_api_key = get_league_api_key();
+
+    let result = riot_api::RiotApi::get_match(MATCH_ID, &lol_api_key);
     assert!(result.is_ok());
     pause_execution();
 }
