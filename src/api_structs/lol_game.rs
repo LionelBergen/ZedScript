@@ -51,17 +51,6 @@ pub struct Game {
     pub game_length: i64,
 }
 
-// TODO:
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
-pub struct GameParticipant {
-"participantId":1,
-"teamId":100,
-"championId":145,
-"spell1Id":7,
-"spell2Id":4,
-"stats":{
-}
-
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct GameResult {
     #[serde(rename = "gameId")]

@@ -8,6 +8,13 @@ pub mod api_structs {
     pub mod lol_match_list;
     pub mod lol_participant;
     pub mod lol_region;
+    pub mod champion_mastery {
+        pub mod lol_champion_mastery_dto;
+    }
+}
+
+pub mod league {
+    pub(crate) mod league_url;
 }
 
 pub mod util {

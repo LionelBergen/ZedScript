@@ -10,6 +10,7 @@ use zed_script::util::http_error::HttpError;
 
 // LeagueOfSausage account id
 const LEAGUE_ACCOUNT_ID: &str = "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY";
+const LEAGUE_SUMMONER_ID: &str = "n-zcEtpy2E4JUt8AksUMpkEB9SsBw51-6b6rDF27wvZ1YYw";
 const MATCH_ID: &str = "3609154837";
 
 fn get_league_api_token() -> String {
@@ -56,10 +57,21 @@ fn test_get_status() {
 }
 
 #[test]
+fn test_get_champion_mastery() {
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::get_champion_mastery(&lol_api_key, LEAGUE_SUMMONER_ID);
+
+    let unwrapped_result = result.unwrap();
+    assert!(!unwrapped_result.is_empty());
+    assert_eq!(LEAGUE_SUMMONER_ID, unwrapped_result[0].summoner_id);
+    pause_execution();
+}
+
+#[test]
 fn test_get_summoner_by_account_id() {
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_summoner_by_account_id(
-        "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY".to_string(),
+        LEAGUE_ACCOUNT_ID.to_string(),
         &lol_api_key,
     );
 
@@ -88,7 +100,7 @@ fn test_get_summoner_by_puuid_id() {
 fn test_get_summoner_by_summoner_id() {
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_summoner_by_summoner_id(
-        "n-zcEtpy2E4JUt8AksUMpkEB9SsBw51-6b6rDF27wvZ1YYw".to_string(),
+        LEAGUE_SUMMONER_ID.to_string(),
         &lol_api_key,
     );
 
@@ -108,7 +120,7 @@ fn test_get_summoner() {
     assert_eq!("LeagueOfSausage", league_account_result.name);
     assert_eq!(106, league_account_result.summoner_level);
     assert_eq!(
-        "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY",
+        LEAGUE_ACCOUNT_ID,
         league_account_result.account_id
     );
     pause_execution();

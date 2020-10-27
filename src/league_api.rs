@@ -4,6 +4,8 @@ use crate::api_structs::lol_game::{Game, GameList};
 use crate::api_structs::lol_match_list::MatchList;
 use crate::util::http_client::HttpClient;
 use crate::util::http_error::HttpError;
+use crate::league::league_url::LeagueUrl;
+use crate::api_structs::champion_mastery::lol_champion_mastery_dto::ChampionMasteryDto;
 
 pub struct RiotApi {}
 
@@ -41,6 +43,21 @@ impl RiotApi {
         let url: String = Self::get_url_from_api_key(RiotApi::GET_STATUS_URL, lol_api_key);
 
         HttpClient::get(url)
+    }
+
+    pub fn get_champion_mastery(lol_api_key: &LolApiKey, summoner_id: &str) -> Result<Vec<ChampionMasteryDto>, HttpError> {
+        let url: String = LeagueUrl::get_champion_mastery_url(lol_api_key, summoner_id);
+
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let result: Vec<ChampionMasteryDto> = serde_json::from_str(&result).unwrap();
+
+                Ok(result)
+            }
+            Err(error) => Err(error),
+        }
     }
 
     pub fn get_third_party_code(
