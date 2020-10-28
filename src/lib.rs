@@ -11,6 +11,9 @@ pub mod api_structs {
     pub mod champion_mastery {
         pub mod lol_champion_mastery_dto;
     }
+    pub mod champion {
+        pub mod lol_champion_info;
+    }
 }
 
 pub mod league {

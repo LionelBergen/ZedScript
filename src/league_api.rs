@@ -6,6 +6,8 @@ use crate::util::http_client::HttpClient;
 use crate::util::http_error::HttpError;
 use crate::league::league_url::LeagueUrl;
 use crate::api_structs::champion_mastery::lol_champion_mastery_dto::ChampionMasteryDto;
+use crate::api_structs::champion::lol_champion_info::ChampionInfo;
+use std::collections::HashMap;
 
 pub struct RiotApi {}
 
@@ -46,7 +48,7 @@ impl RiotApi {
     }
 
     pub fn get_champion_mastery(lol_api_key: &LolApiKey, summoner_id: &str) -> Result<Vec<ChampionMasteryDto>, HttpError> {
-        let url: String = LeagueUrl::get_champion_mastery_url(lol_api_key, summoner_id);
+        let url: String = LeagueUrl::get_champion_mastery(lol_api_key, summoner_id);
 
         let http_result = HttpClient::get(url);
 
@@ -79,6 +81,57 @@ impl RiotApi {
         let url: String = LeagueUrl::get_champion_mastery_score(lol_api_key, summoner_id);
 
         HttpClient::get(url)
+    }
+
+    pub fn get_champion_rotation(lol_api_key: &LolApiKey) -> Result<ChampionInfo, HttpError> {
+        let url: String = LeagueUrl::get_champion_rotation(lol_api_key);
+
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let result: ChampionInfo = serde_json::from_str(&result).unwrap();
+
+                Ok(result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn create_provider_mock(lol_api_key: &LolApiKey, callback_url: &str) -> Result<String, HttpError> {
+        let url: String = LeagueUrl::create_provider_mock(lol_api_key);
+
+        let mut request_paramaters = HashMap::new();
+        request_paramaters.insert("region", lol_api_key.region.to_string());
+        request_paramaters.insert("url", callback_url);
+
+        HttpClient::post(url, Option::from(request_paramaters))
+    }
+
+    pub fn create_tournament_mock(lol_api_key: &LolApiKey, callback_url: &str, provider_id: &str, name_of_tournament: Option<&str>) -> Result<String, HttpError> {
+        let url: String = LeagueUrl::create_tournament_mock(lol_api_key);
+
+        let mut request_paramaters = HashMap::new();
+        request_paramaters.insert("providerId", provider_id);
+
+        if (name_of_tournament.is_some()) {
+            request_paramaters.insert("name", name_of_tournament.unwrap());
+        }
+
+        HttpClient::post(url, Option::from(request_paramaters))
+    }
+
+    pub fn create_tournament_code_mock(lol_api_key: &LolApiKey, allowed_summoner_ids: Option<Vec<&str>>, provider_id: &str, name_of_tournament: Option<&str>) -> Result<String, HttpError> {
+        let url: String = LeagueUrl::create_tournament_mock(lol_api_key);
+
+        let mut request_paramaters = HashMap::new();
+        request_paramaters.insert("providerId", provider_id);
+
+        if (name_of_tournament.is_some()) {
+            request_paramaters.insert("name", name_of_tournament.unwrap());
+        }
+
+        HttpClient::post(url, Option::from(request_paramaters))
     }
 
     pub fn get_third_party_code(

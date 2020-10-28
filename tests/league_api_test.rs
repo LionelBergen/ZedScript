@@ -13,6 +13,9 @@ const LEAGUE_ACCOUNT_ID: &str = "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY
 const LEAGUE_SUMMONER_ID: &str = "n-zcEtpy2E4JUt8AksUMpkEB9SsBw51-6b6rDF27wvZ1YYw";
 const MATCH_ID: &str = "3609154837";
 
+const MOCK_PROVIDER_ID: &str = "68";
+const MOCK_TOURNAMENT_ID: &str = "9508";
+
 fn get_league_api_token() -> String {
     return String::from(&env::var("LEAGUE_API_KEY").unwrap());
 }
@@ -86,6 +89,39 @@ fn test_get_champion_mastery_score() {
 
     let unwrapped_result = result.unwrap();
     assert_eq!("229", unwrapped_result);
+    pause_execution();
+}
+
+#[test]
+fn test_get_champion_rotation() {
+    let lol_api_key = get_league_api_key();
+    // find LeagueOfSausage/DrMundo
+    let result = league_api::RiotApi::get_champion_rotation(&lol_api_key);
+
+    let unwrapped_result = result.unwrap();
+    assert!(!unwrapped_result.free_champion_ids.is_empty());
+    pause_execution();
+}
+
+#[test]
+fn test_create_provider_mock() {
+    let lol_api_key = get_league_api_key();
+    // find LeagueOfSausage/DrMundo
+    let result = league_api::RiotApi::create_provider_mock(&lol_api_key, "https://www.google.com");
+
+    let unwrapped_result = result.unwrap();
+    assert_eq!(MOCK_TOURNAMENT_ID, unwrapped_result);
+    pause_execution();
+}
+
+#[test]
+fn test_create_tournament_mock() {
+    let lol_api_key = get_league_api_key();
+    // find LeagueOfSausage/DrMundo
+    let result = league_api::RiotApi::create_tournament_mock(&lol_api_key, "https://www.google.com", MOCK_PROVIDER_ID, Option::None);
+
+    let unwrapped_result = result.unwrap();
+    assert_eq!(MOCK_TOURNAMENT_ID, unwrapped_result);
     pause_execution();
 }
 

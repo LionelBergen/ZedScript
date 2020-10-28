@@ -29,4 +29,20 @@ impl Region {
             Region::LAS => "la2",
         }
     }
+
+    pub fn to_string(&self) -> &str {
+        match self {
+            Region::RU => "RU",
+            Region::KR => "KR",
+            Region::BR1 => "BR",
+            Region::OCE => "OCE",
+            Region::JP => "JP",
+            Region::NA => "NA",
+            Region::EUNE => "EUNE",
+            Region::EUW => "EUW",
+            Region::TR => "TR",
+            Region::LAN => "LAN",
+            Region::LAS => "LAS",
+        }
+    }
 }
