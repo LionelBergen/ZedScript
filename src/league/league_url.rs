@@ -42,7 +42,7 @@ impl LeagueUrl {
     }
 
     pub fn get_tournament_lobby_events_mock(lol_api_key: &LolApiKey, tournament_code: &str) -> String {
-        return Self::get_url_from_api_key(Self::CREATE_TOURNAMENT_MOCK, lol_api_key).replace("%tournamentcode%", tournament_code);
+        return Self::get_url_from_api_key(Self::TOURNAMENT_EVENTS_MOCK, lol_api_key).replace("%tournamentcode%", tournament_code);
     }
 
     pub fn create_tournament_code_mock(lol_api_key: &LolApiKey, tournament_code: &str) -> String {

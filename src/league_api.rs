@@ -8,6 +8,7 @@ use crate::league::league_url::LeagueUrl;
 use crate::api_structs::champion_mastery::lol_champion_mastery_dto::ChampionMasteryDto;
 use crate::api_structs::champion::lol_champion_info::ChampionInfo;
 use std::collections::HashMap;
+use crate::api_structs::tournament::lol_lobby_event_dto_wrapper::LobbyEventDtoWrapper;
 
 pub struct RiotApi {}
 
@@ -108,6 +109,21 @@ impl RiotApi {
         HttpClient::post(url, Option::from(request_paramaters))
     }
 
+    pub fn get_tournament_lobby_events_mock(lol_api_key: &LolApiKey, tournament_code: &str) -> Result<LobbyEventDtoWrapper, HttpError> {
+        let url: String = LeagueUrl::get_tournament_lobby_events_mock(lol_api_key, tournament_code);
+
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let league_game_result: LobbyEventDtoWrapper = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
     pub fn create_tournament_mock(lol_api_key: &LolApiKey, callback_url: &str, provider_id: &str, name_of_tournament: Option<&str>) -> Result<String, HttpError> {
         let url: String = LeagueUrl::create_tournament_mock(lol_api_key);
 
@@ -127,7 +143,7 @@ impl RiotApi {
         let mut request_paramaters = HashMap::new();
         request_paramaters.insert("providerId", provider_id);
 
-        if (name_of_tournament.is_some()) {
+        if name_of_tournament.is_some() {
             request_paramaters.insert("name", name_of_tournament.unwrap());
         }
 
