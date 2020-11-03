@@ -13,8 +13,8 @@ const LEAGUE_ACCOUNT_ID: &str = "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY
 const LEAGUE_SUMMONER_ID: &str = "n-zcEtpy2E4JUt8AksUMpkEB9SsBw51-6b6rDF27wvZ1YYw";
 const MATCH_ID: &str = "3609154837";
 
-const MOCK_PROVIDER_ID: &str = "778";
-const MOCK_TOURNAMENT_ID: &str = "7588";
+const MOCK_PROVIDER_ID: &str = "228";
+const MOCK_TOURNAMENT_ID: &str = "1158";
 
 fn get_league_api_token() -> String {
     return String::from(&env::var("LEAGUE_API_KEY").unwrap());
@@ -36,6 +36,7 @@ fn pause_execution() {
 
 #[test]
 fn test_get_status_unauthorized() {
+    pause_execution();
     // no api key specified, expect unauthorized response
     let lol_api_key = LolApiKey {
         api_key: "".to_string(),
@@ -52,90 +53,91 @@ fn test_get_status_unauthorized() {
 
 #[test]
 fn test_get_status() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_status(&lol_api_key);
 
     assert!(result.unwrap().contains("active"));
-    pause_execution();
 }
 
 #[test]
 fn test_get_champion_mastery() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_champion_mastery(&lol_api_key, LEAGUE_SUMMONER_ID);
 
     let unwrapped_result = result.unwrap();
     assert!(!unwrapped_result.is_empty());
     assert_eq!(LEAGUE_SUMMONER_ID, unwrapped_result[0].summoner_id);
-    pause_execution();
 }
 
 #[test]
 fn test_get_champion_mastery_by_champion() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
     // find LeagueOfSausage/DrMundo
     let result = league_api::RiotApi::get_champion_mastery_by_champion(&lol_api_key, LEAGUE_SUMMONER_ID, "36");
 
     let unwrapped_result = result.unwrap();
     assert_eq!(LEAGUE_SUMMONER_ID, unwrapped_result.summoner_id);
-    pause_execution();
 }
 
 #[test]
 fn test_get_champion_mastery_score() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
     // find LeagueOfSausage/DrMundo
     let result = league_api::RiotApi::get_champion_mastery_score(&lol_api_key, LEAGUE_SUMMONER_ID);
 
     let unwrapped_result = result.unwrap();
     assert_eq!("229", unwrapped_result);
-    pause_execution();
 }
 
 #[test]
 fn test_get_champion_rotation() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_champion_rotation(&lol_api_key);
 
     let unwrapped_result = result.unwrap();
     assert!(!unwrapped_result.free_champion_ids.is_empty());
-    pause_execution();
 }
 
 #[test]
 fn test_create_provider_mock() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
     // find LeagueOfSausage/DrMundo
     let result = league_api::RiotApi::create_provider_mock(&lol_api_key, "https://www.google.com");
 
     let unwrapped_result = result.unwrap();
     assert_eq!(MOCK_PROVIDER_ID, unwrapped_result);
-    pause_execution();
 }
 
 #[test]
 fn test_create_tournament_mock() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
     // find LeagueOfSausage/DrMundo
     let result = league_api::RiotApi::create_tournament_mock(&lol_api_key, "https://www.google.com", MOCK_PROVIDER_ID, Option::None);
 
     let unwrapped_result = result.unwrap();
     assert_eq!(MOCK_TOURNAMENT_ID, unwrapped_result);
-    pause_execution();
 }
 
 #[test]
 fn test_get_tournament_lobby_events_mock() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
 
     let result = league_api::RiotApi::get_tournament_lobby_events_mock(&lol_api_key, MOCK_TOURNAMENT_ID);
     assert!(result.is_ok());
     assert!(!result.unwrap().events.is_empty());
-    pause_execution();
 }
 
 #[test]
 fn test_get_summoner_by_account_id() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_summoner_by_account_id(
         LEAGUE_ACCOUNT_ID.to_string(),
@@ -145,11 +147,11 @@ fn test_get_summoner_by_account_id() {
     // No need to assert NotNull, values are non-optional
     let league_account_result: LeagueAccount = result.unwrap();
     assert_eq!("LeagueOfSausage", league_account_result.name);
-    pause_execution();
 }
 
 #[test]
 fn test_get_summoner_by_puuid_id() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_summoner_by_puuid_id(
         "PovRyqcBB-MYNAchL1945Gt0dGwJ1b0yOSzj7ArsRYQ5kiySs8UX4WN2Lsvjy1s-6ihupmzL1FvnIQ"
@@ -160,11 +162,11 @@ fn test_get_summoner_by_puuid_id() {
     // No need to assert NotNull, values are non-optional
     let league_account_result: LeagueAccount = result.unwrap();
     assert_eq!("LeagueOfSausage", league_account_result.name);
-    pause_execution();
 }
 
 #[test]
 fn test_get_summoner_by_summoner_id() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_summoner_by_summoner_id(
         LEAGUE_SUMMONER_ID.to_string(),
@@ -174,11 +176,11 @@ fn test_get_summoner_by_summoner_id() {
     // No need to assert NotNull, values are non-optional
     let league_account_result: LeagueAccount = result.unwrap();
     assert_eq!("LeagueOfSausage", league_account_result.name);
-    pause_execution();
 }
 
 #[test]
 fn test_get_summoner() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_summoner(String::from("LeagueOfSausage"), &lol_api_key);
 
@@ -190,11 +192,11 @@ fn test_get_summoner() {
         LEAGUE_ACCOUNT_ID,
         league_account_result.account_id
     );
-    pause_execution();
 }
 
 #[test]
 fn test_get_summoner_not_exist() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_summoner(String::from("LeagueOfSausage22"), &lol_api_key);
     let expected = HttpError {
@@ -203,11 +205,11 @@ fn test_get_summoner_not_exist() {
     };
 
     assert_eq!(Err(expected), result);
-    pause_execution();
 }
 
 #[test]
 fn test_get_third_party_code() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
 
     let result = league_api::RiotApi::get_third_party_code("123", &lol_api_key);
@@ -217,20 +219,20 @@ fn test_get_third_party_code() {
     };
 
     assert_eq!(Err(expected), result);
-    pause_execution();
 }
 
 #[test]
 fn test_get_featured_games() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
 
     let result = league_api::RiotApi::get_featured_games(&lol_api_key);
     assert!(result.is_ok());
-    pause_execution();
 }
 
 #[test]
 fn test_get_active_games() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
 
     let active_game_list = league_api::RiotApi::get_featured_games(&lol_api_key);
@@ -250,23 +252,22 @@ fn test_get_active_games() {
 
     let result = league_api::RiotApi::get_active_games(&active_game_summoner_id, &lol_api_key);
     assert!(result.is_ok());
-    pause_execution();
 }
 
 #[test]
 fn test_get_match() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
 
     let result = league_api::RiotApi::get_match(MATCH_ID, &lol_api_key);
     assert!(result.is_ok());
-    pause_execution();
 }
 
 #[test]
 fn test_get_match_list() {
+    pause_execution();
     let lol_api_key = get_league_api_key();
 
     let result = league_api::RiotApi::get_match_list(LEAGUE_ACCOUNT_ID, &lol_api_key);
     assert!(result.is_ok());
-    pause_execution();
 }

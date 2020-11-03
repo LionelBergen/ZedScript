@@ -11,6 +11,8 @@ impl LeagueUrl {
     // CHAMPION-V3
     const CHAMPION_ROTATION: &'static str = "https://%region%.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=%apikey%";
 
+    // CLASH-V1
+
     // TOURNAMENT-STUB-V4
     const CREATE_TOURNAMENT_CODE_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/codes?api_key=%apikey%";
     const TOURNAMENT_EVENTS_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/lobby-events/by-code/%tournamentcode%?api_key=%apikey%";
