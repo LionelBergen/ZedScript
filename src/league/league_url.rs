@@ -12,6 +12,11 @@ impl LeagueUrl {
     const CHAMPION_ROTATION: &'static str = "https://%region%.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=%apikey%";
 
     // CLASH-V1
+    const GET_CLASH_PLAYERS_BY_SUMMONER_ID: &'static str = "https://%region%.api.riotgames.com/lol/clash/v1/players/by-summoner/%summonerid%?api_key=%apikey%";
+    const GET_CLASH_TEAM: &'static str = "https://%region%.api.riotgames.com/lol/clash/v1/teams/%teamid%?api_key=%apikey%";
+    const GET_CLASH_TOURNAMENTS: &'static str = "https://%region%.api.riotgames.com/lol/clash/v1/tournaments?api_key=%apikey%";
+    const GET_CLASH_TOURNAMENT_BY_TEAM_ID: &'static str = "https://%region%.api.riotgames.com/lol/clash/v1/tournaments/by-team/%teamid%?api_key=%apikey%";
+    const GET_CLASH_TOURNAMENT: &'static str = "https://%region%.api.riotgames.com/lol/clash/v1/tournaments/%tournamentid%?api_key=%apikey%";
 
     // TOURNAMENT-STUB-V4
     const CREATE_TOURNAMENT_CODE_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/codes?api_key=%apikey%";
@@ -37,6 +42,26 @@ impl LeagueUrl {
 
     pub fn create_provider_mock(lol_api_key: &LolApiKey) -> String {
         return Self::get_url_from_api_key(Self::CREATE_PROVIDER_MOCK, lol_api_key);
+    }
+
+    pub fn get_clash_players(lol_api_key: &LolApiKey, summoner_id: &str) -> String {
+        return Self::get_url_from_api_key_with_summoner_id(Self::GET_CLASH_PLAYERS_BY_SUMMONER_ID, lol_api_key, summoner_id);
+    }
+
+    pub fn get_clash_team(lol_api_key: &LolApiKey, team_id: &str) -> String {
+        return Self::get_url_from_api_key(Self::GET_CLASH_TEAM, lol_api_key).replace("%teamid%", team_id);
+    }
+
+    pub fn get_clash_tournament_by_team_id(lol_api_key: &LolApiKey, team_id: &str) -> String {
+        return Self::get_url_from_api_key(Self::GET_CLASH_TOURNAMENT_BY_TEAM_ID, lol_api_key).replace("%teamid%", team_id);
+    }
+
+    pub fn get_clash_tournaments(lol_api_key: &LolApiKey) -> String {
+        return Self::get_url_from_api_key(Self::GET_CLASH_TOURNAMENTS, lol_api_key);
+    }
+
+    pub fn get_clash_tournament(lol_api_key: &LolApiKey, tournament_id: &str) -> String {
+        return Self::get_url_from_api_key(Self::GET_CLASH_TOURNAMENT, lol_api_key).replace("%tournamentid%", tournament_id);
     }
 
     pub fn create_tournament_mock(lol_api_key: &LolApiKey) -> String {

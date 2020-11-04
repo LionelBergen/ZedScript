@@ -17,6 +17,10 @@ pub mod api_structs {
     pub mod tournament {
         pub mod lol_lobby_event_dto_wrapper;
     }
+    pub mod clash {
+        pub mod lol_tournament_dto;
+        pub mod lol_team_dto;
+    }
 }
 
 pub mod league {

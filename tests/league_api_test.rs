@@ -7,6 +7,7 @@ use zed_script::league_api;
 use std::env;
 use zed_script::api_structs::lol_account::LeagueAccount;
 use zed_script::util::http_error::HttpError;
+use zed_script::api_structs::clash::lol_team_dto::PlayerDto;
 
 // LeagueOfSausage account id
 const LEAGUE_ACCOUNT_ID: &str = "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY";
@@ -101,6 +102,60 @@ fn test_get_champion_rotation() {
 
     let unwrapped_result = result.unwrap();
     assert!(!unwrapped_result.free_champion_ids.is_empty());
+}
+
+#[test]
+fn test_get_clash_players() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::get_clash_players(&lol_api_key, LEAGUE_SUMMONER_ID);
+
+    let unwrapped_result = result.unwrap();
+    assert!(unwrapped_result.is_empty());
+}
+
+// TODO:
+#[test]
+fn test_get_clash_team() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::get_clash_team(&lol_api_key, "100");
+
+    let unwrapped_result = result.unwrap();
+    assert_eq!("gg", unwrapped_result.name);
+}
+
+// TODO:
+#[test]
+fn test_get_clash_tournament_by_team_id() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::get_clash_tournament_by_team_id(&lol_api_key, "100");
+
+    let unwrapped_result = result.unwrap();
+    assert_eq!("gg", unwrapped_result.name_key);
+}
+
+#[test]
+fn test_get_clash_tournaments() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::get_clash_tournaments(&lol_api_key);
+
+    let unwrapped_result = result.unwrap();
+    assert!(!unwrapped_result.is_empty());
+}
+
+#[test]
+fn test_get_clash_tournament() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let tournaments = league_api::RiotApi::get_clash_tournaments(&lol_api_key).unwrap();
+    pause_execution();
+    let result = league_api::RiotApi::get_clash_tournament(&lol_api_key, &tournaments[0].id.to_string());
+
+    let unwrapped_result = result.unwrap();
+    assert_ne!("", unwrapped_result.name_key);
 }
 
 #[test]

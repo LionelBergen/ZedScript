@@ -9,6 +9,8 @@ use crate::api_structs::champion_mastery::lol_champion_mastery_dto::ChampionMast
 use crate::api_structs::champion::lol_champion_info::ChampionInfo;
 use std::collections::HashMap;
 use crate::api_structs::tournament::lol_lobby_event_dto_wrapper::LobbyEventDtoWrapper;
+use crate::api_structs::clash::lol_tournament_dto::TournamentDto;
+use crate::api_structs::clash::lol_team_dto::{PlayerDto, TeamDto};
 
 pub struct RiotApi {}
 
@@ -107,6 +109,81 @@ impl RiotApi {
         request_paramaters.insert("url", callback_url);
 
         HttpClient::post(url, Option::from(request_paramaters))
+    }
+
+    pub fn get_clash_players(lol_api_key: &LolApiKey, summoner_id: &str) -> Result<Vec<PlayerDto>, HttpError> {
+        let url: String = LeagueUrl::get_clash_players(lol_api_key, summoner_id);
+
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let team_result: Vec<PlayerDto> = serde_json::from_str(&result).unwrap();
+
+                Ok(team_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_clash_team(lol_api_key: &LolApiKey, team_id: &str) -> Result<TeamDto, HttpError> {
+        let url: String = LeagueUrl::get_clash_team(lol_api_key, team_id);
+
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let team_result: TeamDto = serde_json::from_str(&result).unwrap();
+
+                Ok(team_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_clash_tournament_by_team_id(lol_api_key: &LolApiKey, team_id: &str) -> Result<TournamentDto, HttpError> {
+        let url: String = LeagueUrl::get_clash_tournament_by_team_id(lol_api_key, team_id);
+
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let tournament_result: TournamentDto = serde_json::from_str(&result).unwrap();
+
+                Ok(tournament_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_clash_tournaments(lol_api_key: &LolApiKey) -> Result<Vec<TournamentDto>, HttpError> {
+        let url: String = LeagueUrl::get_clash_tournaments(lol_api_key);
+
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let tournaments_result: Vec<TournamentDto> = serde_json::from_str(&result).unwrap();
+
+                Ok(tournaments_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_clash_tournament(lol_api_key: &LolApiKey, tounament_id: &str) -> Result<TournamentDto, HttpError> {
+        let url: String = LeagueUrl::get_clash_tournament(lol_api_key, tounament_id);
+
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let league_game_result: TournamentDto = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
     }
 
     pub fn get_tournament_lobby_events_mock(lol_api_key: &LolApiKey, tournament_code: &str) -> Result<LobbyEventDtoWrapper, HttpError> {
