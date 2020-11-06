@@ -58,7 +58,7 @@ fn test_get_status() {
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_status(&lol_api_key);
 
-    assert!(result.unwrap().contains("active"));
+    assert_ne!("", result.unwrap().name);
 }
 
 #[test]

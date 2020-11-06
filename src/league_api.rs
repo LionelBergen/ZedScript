@@ -13,6 +13,7 @@ use crate::api_structs::clash::lol_tournament_dto::TournamentDto;
 use crate::api_structs::clash::lol_team_dto::{PlayerDto, TeamDto};
 use crate::api_structs::league::lol_league_entry_dto::LeagueEntryDTO;
 use crate::api_structs::league::lol_league_list_dto::LeagueListDTO;
+use crate::api_structs::status::lol_shard_data::ShardStatus;
 
 pub struct RiotApi {}
 
@@ -41,10 +42,19 @@ impl RiotApi {
 
     // TOURNAMENT-V4
 
-    pub fn get_status(lol_api_key: &LolApiKey) -> Result<String, HttpError> {
+    pub fn get_status(lol_api_key: &LolApiKey) -> Result<ShardStatus, HttpError> {
         let url: String = LeagueUrl::get_status(lol_api_key);
 
-        HttpClient::get(url)
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let result: ShardStatus = serde_json::from_str(&result).unwrap();
+
+                Ok(result)
+            }
+            Err(error) => Err(error),
+        }
     }
 
     pub fn get_champion_mastery(lol_api_key: &LolApiKey, summoner_id: &str) -> Result<Vec<ChampionMasteryDto>, HttpError> {

@@ -27,6 +27,9 @@ pub mod api_structs {
         pub mod lol_league_item_dto;
         pub mod lol_league_list_dto;
     }
+    pub mod status {
+        pub mod lol_shard_data;
+    }
 }
 
 pub mod league {
