@@ -18,6 +18,9 @@ impl LeagueUrl {
     const GET_CLASH_TOURNAMENT_BY_TEAM_ID: &'static str = "https://%region%.api.riotgames.com/lol/clash/v1/tournaments/by-team/%teamid%?api_key=%apikey%";
     const GET_CLASH_TOURNAMENT: &'static str = "https://%region%.api.riotgames.com/lol/clash/v1/tournaments/%tournamentid%?api_key=%apikey%";
 
+    // LEAGUE-EXP-V4
+    const GET_LEAGUE_ENTRIES: &'static str = "https://%region%.api.riotgames.com/lol/league-exp/v4/entries/%queue%/%tier%/%division%?api_key=%apikey%";
+
     // TOURNAMENT-STUB-V4
     const CREATE_TOURNAMENT_CODE_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/codes?api_key=%apikey%";
     const TOURNAMENT_EVENTS_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/lobby-events/by-code/%tournamentcode%?api_key=%apikey%";
@@ -64,6 +67,10 @@ impl LeagueUrl {
         return Self::get_url_from_api_key(Self::GET_CLASH_TOURNAMENT, lol_api_key).replace("%tournamentid%", tournament_id);
     }
 
+    pub fn get_league_entries(lol_api_key: &LolApiKey, queue: &str, tier: &str, division: &str) -> String {
+        return Self::get_url_from_api_key_with_division_queue_tier(Self::GET_LEAGUE_ENTRIES, lol_api_key, queue, tier, division);
+    }
+
     pub fn create_tournament_mock(lol_api_key: &LolApiKey) -> String {
         return Self::get_url_from_api_key(Self::CREATE_TOURNAMENT_MOCK, lol_api_key);
     }
@@ -90,5 +97,12 @@ impl LeagueUrl {
 
     fn get_url_from_api_key(original_url: &str, lol_api_key: &LolApiKey) -> String {
         Self::get_url_from_api_key_with_summoner_id(original_url, lol_api_key, "")
+    }
+
+    fn get_url_from_api_key_with_division_queue_tier(original_url: &str, lol_api_key: &LolApiKey, queue: &str, tier: &str, division: &str) -> String {
+        Self::get_url_from_api_key(original_url, lol_api_key)
+            .replace("%queue%", queue)
+            .replace("%tier%", tier)
+            .replace("%division%", division)
     }
 }

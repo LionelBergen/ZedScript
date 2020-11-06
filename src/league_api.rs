@@ -11,6 +11,7 @@ use std::collections::HashMap;
 use crate::api_structs::tournament::lol_lobby_event_dto_wrapper::LobbyEventDtoWrapper;
 use crate::api_structs::clash::lol_tournament_dto::TournamentDto;
 use crate::api_structs::clash::lol_team_dto::{PlayerDto, TeamDto};
+use crate::api_structs::league::lol_league_entry_dto::LeagueEntryDto;
 
 pub struct RiotApi {}
 
@@ -179,6 +180,20 @@ impl RiotApi {
         match http_result {
             Ok(result) => {
                 let league_game_result: TournamentDto = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_league_entries(lol_api_key: &LolApiKey, queue: &str, tier: &str, division: &str) -> Result<Vec<LeagueEntryDto>, HttpError> {
+        let url: String = LeagueUrl::get_league_entries(lol_api_key, queue, tier, division);
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let league_game_result: Vec<LeagueEntryDto> = serde_json::from_str(&result).unwrap();
 
                 Ok(league_game_result)
             }

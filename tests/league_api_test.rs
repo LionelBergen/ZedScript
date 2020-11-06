@@ -159,6 +159,16 @@ fn test_get_clash_tournament() {
 }
 
 #[test]
+fn test_get_league_entries() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::get_league_entries(&lol_api_key, "RANKED_SOLO_5x5", "CHALLENGER", "I");
+
+    let unwrapped_result = result.unwrap();
+    assert!(!unwrapped_result.is_empty());
+}
+
+#[test]
 fn test_create_provider_mock() {
     pause_execution();
     let lol_api_key = get_league_api_key();
