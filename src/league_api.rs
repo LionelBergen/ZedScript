@@ -11,7 +11,8 @@ use std::collections::HashMap;
 use crate::api_structs::tournament::lol_lobby_event_dto_wrapper::LobbyEventDtoWrapper;
 use crate::api_structs::clash::lol_tournament_dto::TournamentDto;
 use crate::api_structs::clash::lol_team_dto::{PlayerDto, TeamDto};
-use crate::api_structs::league::lol_league_entry_dto::LeagueEntryDto;
+use crate::api_structs::league::lol_league_entry_dto::LeagueEntryDTO;
+use crate::api_structs::league::lol_league_list_dto::LeagueListDTO;
 
 pub struct RiotApi {}
 
@@ -187,13 +188,97 @@ impl RiotApi {
         }
     }
 
-    pub fn get_league_entries(lol_api_key: &LolApiKey, queue: &str, tier: &str, division: &str) -> Result<Vec<LeagueEntryDto>, HttpError> {
+    pub fn get_league_entries(lol_api_key: &LolApiKey, queue: &str, tier: &str, division: &str) -> Result<Vec<LeagueEntryDTO>, HttpError> {
         let url: String = LeagueUrl::get_league_entries(lol_api_key, queue, tier, division);
         let http_result = HttpClient::get(url);
 
         match http_result {
             Ok(result) => {
-                let league_game_result: Vec<LeagueEntryDto> = serde_json::from_str(&result).unwrap();
+                let league_game_result: Vec<LeagueEntryDTO> = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_challenger_league(lol_api_key: &LolApiKey, queue: &str) -> Result<LeagueListDTO, HttpError> {
+        let url: String = LeagueUrl::get_challenger_league(lol_api_key, queue);
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let league_game_result: LeagueListDTO = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_league_entries_by_summoner_id(lol_api_key: &LolApiKey, summoner_id: &str) -> Result<Vec<LeagueEntryDTO>, HttpError> {
+        let url: String = LeagueUrl::get_league_entries_by_summoner(lol_api_key, summoner_id);
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let league_game_result: Vec<LeagueEntryDTO> = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_all_league_entries(lol_api_key: &LolApiKey, queue: &str, tier: &str, division: &str) -> Result<Vec<LeagueEntryDTO>, HttpError> {
+        let url: String = LeagueUrl::get_all_league_entries(lol_api_key, queue, tier, division);
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let league_game_result: Vec<LeagueEntryDTO> = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_grandmaster_league(lol_api_key: &LolApiKey, queue: &str) -> Result<LeagueListDTO, HttpError> {
+        let url: String = LeagueUrl::get_grandmaster_league(lol_api_key, queue);
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let league_game_result: LeagueListDTO = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_league(lol_api_key: &LolApiKey, league_id: &str) -> Result<LeagueListDTO, HttpError> {
+        let url: String = LeagueUrl::get_league(lol_api_key, league_id);
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let league_game_result: LeagueListDTO = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_master_league(lol_api_key: &LolApiKey, queue: &str) -> Result<LeagueListDTO, HttpError> {
+        let url: String = LeagueUrl::get_master_league(lol_api_key, queue);
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                let league_game_result: LeagueListDTO = serde_json::from_str(&result).unwrap();
 
                 Ok(league_game_result)
             }

@@ -23,6 +23,9 @@ pub mod api_structs {
     }
     pub mod league {
         pub mod lol_league_entry_dto;
+        pub mod lol_mini_series_dto;
+        pub mod lol_league_item_dto;
+        pub mod lol_league_list_dto;
     }
 }
 

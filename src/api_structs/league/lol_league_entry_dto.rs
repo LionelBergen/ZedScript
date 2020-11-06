@@ -1,15 +1,8 @@
 use serde::{Deserialize, Serialize};
+use crate::api_structs::league::lol_mini_series_dto::MiniSeriesDTO;
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct MiniSeriesDTO {
-    pub losses: i16,
-    pub progress: String,
-    pub target: i16,
-    pub wins: i16
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct LeagueEntryDto {
+pub struct LeagueEntryDTO {
     #[serde(rename = "leagueId")]
     pub league_id: String,
     #[serde(rename = "summonerId")]

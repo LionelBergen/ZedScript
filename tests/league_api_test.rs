@@ -169,6 +169,66 @@ fn test_get_league_entries() {
 }
 
 #[test]
+fn test_get_challenger_league() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::get_challenger_league(&lol_api_key, "RANKED_SOLO_5x5");
+
+    let unwrapped_result = result.unwrap();
+    assert!(!unwrapped_result.entries.is_empty());
+}
+
+#[test]
+fn test_get_league_entries_by_summoner_id() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::get_league_entries_by_summoner_id(&lol_api_key, "0pkZjg-IXKqoi6MTFpMyV1tY1bL5zTLiRvjVmkh5lpO8pg8");
+
+    let unwrapped_result = result.unwrap();
+    assert!(!unwrapped_result.is_empty());
+}
+
+#[test]
+fn test_get_all_league_entries() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::get_all_league_entries(&lol_api_key, "RANKED_SOLO_5x5", "DIAMOND", "I");
+
+    let unwrapped_result = result.unwrap();
+    assert!(!unwrapped_result.is_empty());
+}
+
+#[test]
+fn test_get_grandmaster_league() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::get_grandmaster_league(&lol_api_key, "RANKED_SOLO_5x5");
+
+    let unwrapped_result = result.unwrap();
+    assert!(!unwrapped_result.entries.is_empty());
+}
+
+#[test]
+fn test_get_league() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::get_league(&lol_api_key, "c60807e8-6afb-38fd-ab9b-ae8588dc8b27");
+
+    let unwrapped_result = result.unwrap();
+    assert!(!unwrapped_result.entries.is_empty());
+}
+
+#[test]
+fn test_get_master_league() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::get_master_league(&lol_api_key, "RANKED_SOLO_5x5");
+
+    let unwrapped_result = result.unwrap();
+    assert!(!unwrapped_result.entries.is_empty());
+}
+
+#[test]
 fn test_create_provider_mock() {
     pause_execution();
     let lol_api_key = get_league_api_key();
