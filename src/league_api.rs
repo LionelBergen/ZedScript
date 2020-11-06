@@ -17,11 +17,6 @@ use crate::api_structs::league::lol_league_list_dto::LeagueListDTO;
 pub struct RiotApi {}
 
 impl RiotApi {
-    const GET_STATUS_URL: &'static str =
-        "https://%region%.api.riotgames.com/lol/status/v3/shard-data?api_key=%apikey%";
-
-    // THIRD_PARTY_CODE-V4
-
     // MATCH-V4
     const GET_MATCH: &'static str =
         "https://%region%.api.riotgames.com/lol/match/v4/matches/%matchid%?api_key=%apikey%";
@@ -47,7 +42,7 @@ impl RiotApi {
     // TOURNAMENT-V4
 
     pub fn get_status(lol_api_key: &LolApiKey) -> Result<String, HttpError> {
-        let url: String = Self::get_url_from_api_key(RiotApi::GET_STATUS_URL, lol_api_key);
+        let url: String = LeagueUrl::get_status(lol_api_key);
 
         HttpClient::get(url)
     }

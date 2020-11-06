@@ -29,6 +29,9 @@ impl LeagueUrl {
     const GET_LEAGUE: &'static str = "https://%region%.api.riotgames.com/lol/league/v4/leagues/%leagueid%?api_key=%apikey%";
     const GET_MASTER_LEAGUE: &'static str = "https://%region%.api.riotgames.com/lol/league/v4/masterleagues/by-queue/%queue%?api_key=%apikey%";
 
+    // LOL-STATUS-V3
+    const GET_STATUS_URL: &'static str = "https://%region%.api.riotgames.com/lol/status/v3/shard-data?api_key=%apikey%";
+
     // TOURNAMENT-STUB-V4
     const CREATE_TOURNAMENT_CODE_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/codes?api_key=%apikey%";
     const TOURNAMENT_EVENTS_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/lobby-events/by-code/%tournamentcode%?api_key=%apikey%";
@@ -101,6 +104,10 @@ impl LeagueUrl {
 
     pub fn get_master_league(lol_api_key: &LolApiKey, queue: &str) -> String {
         return Self::get_url_from_api_key_with_division_queue_tier(Self::GET_MASTER_LEAGUE, lol_api_key, queue, "", "");
+    }
+
+    pub fn get_status(lol_api_key: &LolApiKey) -> String {
+        return Self::get_url_from_api_key(Self::GET_STATUS_URL, lol_api_key);
     }
 
     pub fn create_tournament_mock(lol_api_key: &LolApiKey) -> String {
