@@ -41,6 +41,9 @@ pub mod api_structs {
         pub mod lol_featured_games;
         pub mod lol_observer;
     }
+    pub mod summoner {
+        pub mod lol_summoner_dto;
+    }
 }
 
 pub mod league {

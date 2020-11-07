@@ -8,6 +8,7 @@ use std::env;
 use zed_script::api_structs::lol_account::LeagueAccount;
 use zed_script::util::http_error::HttpError;
 use zed_script::api_structs::clash::lol_team_dto::PlayerDto;
+use zed_script::api_structs::summoner::lol_summoner_dto::SummonerDTO;
 
 // LeagueOfSausage account id
 const LEAGUE_ACCOUNT_ID: &str = "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY";
@@ -267,13 +268,10 @@ fn test_get_tournament_lobby_events_mock() {
 fn test_get_summoner_by_account_id() {
     pause_execution();
     let lol_api_key = get_league_api_key();
-    let result = league_api::RiotApi::get_summoner_by_account_id(
-        LEAGUE_ACCOUNT_ID.to_string(),
-        &lol_api_key,
-    );
+    let result = league_api::RiotApi::get_summoner_by_account_id(&lol_api_key,LEAGUE_ACCOUNT_ID.to_string());
 
     // No need to assert NotNull, values are non-optional
-    let league_account_result: LeagueAccount = result.unwrap();
+    let league_account_result: SummonerDTO = result.unwrap();
     assert_eq!("LeagueOfSausage", league_account_result.name);
 }
 
@@ -281,14 +279,10 @@ fn test_get_summoner_by_account_id() {
 fn test_get_summoner_by_puuid_id() {
     pause_execution();
     let lol_api_key = get_league_api_key();
-    let result = league_api::RiotApi::get_summoner_by_puuid_id(
-        "PovRyqcBB-MYNAchL1945Gt0dGwJ1b0yOSzj7ArsRYQ5kiySs8UX4WN2Lsvjy1s-6ihupmzL1FvnIQ"
-            .to_string(),
-        &lol_api_key,
-    );
+    let result = league_api::RiotApi::get_summoner_by_puuid_id(&lol_api_key, "PovRyqcBB-MYNAchL1945Gt0dGwJ1b0yOSzj7ArsRYQ5kiySs8UX4WN2Lsvjy1s-6ihupmzL1FvnIQ".to_string());
 
     // No need to assert NotNull, values are non-optional
-    let league_account_result: LeagueAccount = result.unwrap();
+    let league_account_result: SummonerDTO = result.unwrap();
     assert_eq!("LeagueOfSausage", league_account_result.name);
 }
 
@@ -297,12 +291,12 @@ fn test_get_summoner_by_summoner_id() {
     pause_execution();
     let lol_api_key = get_league_api_key();
     let result = league_api::RiotApi::get_summoner_by_summoner_id(
-        LEAGUE_SUMMONER_ID.to_string(),
         &lol_api_key,
+        LEAGUE_SUMMONER_ID.to_string()
     );
 
     // No need to assert NotNull, values are non-optional
-    let league_account_result: LeagueAccount = result.unwrap();
+    let league_account_result: SummonerDTO = result.unwrap();
     assert_eq!("LeagueOfSausage", league_account_result.name);
 }
 
@@ -310,10 +304,10 @@ fn test_get_summoner_by_summoner_id() {
 fn test_get_summoner() {
     pause_execution();
     let lol_api_key = get_league_api_key();
-    let result = league_api::RiotApi::get_summoner(String::from("LeagueOfSausage"), &lol_api_key);
+    let result = league_api::RiotApi::get_summoner(&lol_api_key, String::from("LeagueOfSausage"));
 
     // No need to assert NotNull, values are non-optional
-    let league_account_result: LeagueAccount = result.unwrap();
+    let league_account_result: SummonerDTO = result.unwrap();
     assert_eq!("LeagueOfSausage", league_account_result.name);
     assert_eq!(106, league_account_result.summoner_level);
     assert_eq!(
@@ -326,7 +320,7 @@ fn test_get_summoner() {
 fn test_get_summoner_not_exist() {
     pause_execution();
     let lol_api_key = get_league_api_key();
-    let result = league_api::RiotApi::get_summoner(String::from("LeagueOfSausage22"), &lol_api_key);
+    let result = league_api::RiotApi::get_summoner(&lol_api_key, String::from("LeagueOfSausage22"));
     let expected = HttpError {
         error_message: "Error in http request".to_string(),
         http_response_code: Some(404),
@@ -371,7 +365,7 @@ fn test_get_active_game() {
         &active_game_list.unwrap().game_list[0].participants[0].summoner_name;
 
     let summoner =
-        league_api::RiotApi::get_summoner(summoner_name_in_active_game.to_string(), &lol_api_key);
+        league_api::RiotApi::get_summoner(&lol_api_key, summoner_name_in_active_game.to_string());
     assert!(summoner.is_ok());
     pause_execution();
 

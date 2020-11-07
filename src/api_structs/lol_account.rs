@@ -18,7 +18,6 @@ pub struct LeagueAccount {
 
 impl PartialEq for LeagueAccount {
     fn eq(&self, other: &Self) -> bool {
-        /*self.summoner_id == other.summoner_id && */
         self.account_id == other.account_id && self.name == other.name
     }
 }

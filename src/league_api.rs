@@ -19,16 +19,11 @@ use crate::api_structs::match_v4::lol_match_list_dto::MatchListDto;
 use crate::api_structs::match_v4::lol_match_timeline_dto::MatchTimelineDto;
 use crate::api_structs::spectator::lol_current_game_info::CurrentGameInfo;
 use crate::api_structs::spectator::lol_featured_games::FeaturedGames;
+use crate::api_structs::summoner::lol_summoner_dto::SummonerDTO;
 
 pub struct RiotApi {}
 
 impl RiotApi {
-    // SUMMONER-V4
-    const GET_SUMMONER_BY_ACCOUNT_ID: &'static str = "https://%region%.api.riotgames.com/lol/summoner/v4/summoners/by-account/%accountid%?api_key=%apikey%";
-    const SUMMONER_BY_NAME_URL: &'static str = "https://%region%.api.riotgames.com/lol/summoner/v4/summoners/by-name/%name%?api_key=%apikey%";
-    const SUMMONER_BY_PUIID_URL: &'static str = "https://%region%.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/%PUUID%?api_key=%apikey%";
-    const SUMMONER_BY_SUMMONER_ID_URL: &'static str = "https://%region%.api.riotgames.com/lol/summoner/v4/summoners/%summonerid%?api_key=%apikey%";
-
     // THIRD-PARTY-CODE-V4
     const GET_THIRD_PARTY_CODE_URL: &'static str = "https://%region%.api.riotgames.com/lol/platform/v4/third-party-code/by-summoner/%summonerid%?api_key=%apikey%";
 
@@ -439,56 +434,60 @@ impl RiotApi {
         }
     }
 
-    pub fn get_summoner_by_account_id(
-        account_id: String,
-        lol_api_key: &LolApiKey,
-    ) -> Result<LeagueAccount, HttpError> {
-        let url: String = Self::get_url_from_api_key_with_account_id(
-            RiotApi::GET_SUMMONER_BY_ACCOUNT_ID,
-            lol_api_key,
-            &account_id,
-        );
+    pub fn get_summoner_by_account_id(lol_api_key: &LolApiKey, account_id: String) -> Result<SummonerDTO, HttpError> {
+        let url: String = LeagueUrl::get_summoner_by_account_id(lol_api_key, &account_id);
+        let http_result = HttpClient::get(url);
 
-        Self::get_league_account_from_url(url)
+        match http_result {
+            Ok(result) => {
+                let league_account: SummonerDTO = serde_json::from_str(&result).unwrap();
+
+                Ok(league_account)
+            }
+            Err(error) => Err(error),
+        }
     }
 
-    pub fn get_summoner_by_puuid_id(
-        puuid: String,
-        lol_api_key: &LolApiKey,
-    ) -> Result<LeagueAccount, HttpError> {
-        let url: String = Self::get_url_from_api_key_with_puuid_id(
-            RiotApi::SUMMONER_BY_PUIID_URL,
-            lol_api_key,
-            &puuid,
-        );
+    pub fn get_summoner_by_puuid_id(lol_api_key: &LolApiKey, puuid: String) -> Result<SummonerDTO, HttpError> {
+        let url: String = LeagueUrl::get_summoner_by_puuid(lol_api_key, &puuid);
+        let http_result = HttpClient::get(url);
 
-        Self::get_league_account_from_url(url)
+        match http_result {
+            Ok(result) => {
+                let league_account: SummonerDTO = serde_json::from_str(&result).unwrap();
+
+                Ok(league_account)
+            }
+            Err(error) => Err(error),
+        }
     }
 
-    pub fn get_summoner_by_summoner_id(
-        summoner_id: String,
-        lol_api_key: &LolApiKey,
-    ) -> Result<LeagueAccount, HttpError> {
-        let url: String = Self::get_url_from_api_key_with_summoner_id(
-            RiotApi::SUMMONER_BY_SUMMONER_ID_URL,
-            lol_api_key,
-            &summoner_id,
-        );
+    pub fn get_summoner_by_summoner_id(lol_api_key: &LolApiKey, summoner_id: String) -> Result<SummonerDTO, HttpError> {
+        let url: String = LeagueUrl::get_summoner_by_summoner_id(lol_api_key, &summoner_id);
+        let http_result = HttpClient::get(url);
 
-        Self::get_league_account_from_url(url)
+        match http_result {
+            Ok(result) => {
+                let league_account: SummonerDTO = serde_json::from_str(&result).unwrap();
+
+                Ok(league_account)
+            }
+            Err(error) => Err(error),
+        }
     }
 
-    pub fn get_summoner(
-        summoner_name: String,
-        lol_api_key: &LolApiKey,
-    ) -> Result<LeagueAccount, HttpError> {
-        let url: String = Self::get_url_from_api_key_with_name(
-            RiotApi::SUMMONER_BY_NAME_URL,
-            lol_api_key,
-            summoner_name,
-        );
+    pub fn get_summoner(lol_api_key: &LolApiKey, summoner_name: String) -> Result<SummonerDTO, HttpError> {
+        let url: String = LeagueUrl::get_summoner_by_name(lol_api_key, &summoner_name);
+        let http_result = HttpClient::get(url);
 
-        Self::get_league_account_from_url(url)
+        match http_result {
+            Ok(result) => {
+                let league_account: SummonerDTO = serde_json::from_str(&result).unwrap();
+
+                Ok(league_account)
+            }
+            Err(error) => Err(error),
+        }
     }
 
     fn get_league_account_from_url(url: String) -> Result<LeagueAccount, HttpError> {
