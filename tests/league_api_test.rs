@@ -329,12 +329,13 @@ fn test_get_summoner_not_exist() {
     assert_eq!(Err(expected), result);
 }
 
+// TODO: proper test somehow
 #[test]
 fn test_get_third_party_code() {
     pause_execution();
     let lol_api_key = get_league_api_key();
 
-    let result = league_api::RiotApi::get_third_party_code("123", &lol_api_key);
+    let result = league_api::RiotApi::get_third_party_code(&lol_api_key, "123");
     let expected = HttpError {
         error_message: "Error in http request".to_string(),
         http_response_code: Some(400),

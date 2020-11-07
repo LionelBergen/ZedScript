@@ -24,11 +24,6 @@ use crate::api_structs::summoner::lol_summoner_dto::SummonerDTO;
 pub struct RiotApi {}
 
 impl RiotApi {
-    // THIRD-PARTY-CODE-V4
-    const GET_THIRD_PARTY_CODE_URL: &'static str = "https://%region%.api.riotgames.com/lol/platform/v4/third-party-code/by-summoner/%summonerid%?api_key=%apikey%";
-
-    // TOURNAMENT-V4
-
     pub fn get_status(lol_api_key: &LolApiKey) -> Result<ShardStatus, HttpError> {
         let url: String = LeagueUrl::get_status(lol_api_key);
 
@@ -319,13 +314,8 @@ impl RiotApi {
         HttpClient::post(url, Option::from(request_paramaters))
     }
 
-    pub fn get_third_party_code(
-        encrypted_summoner_id: &str,
-        lol_api_key: &LolApiKey,
-    ) -> Result<String, HttpError> {
-        let url: String =
-            Self::get_url_from_api_key(RiotApi::GET_THIRD_PARTY_CODE_URL, lol_api_key)
-                .replace("%summonerid%", encrypted_summoner_id);
+    pub fn get_third_party_code(lol_api_key: &LolApiKey, encrypted_summoner_id: &str) -> Result<String, HttpError> {
+        let url: String = LeagueUrl::get_third_party_code(lol_api_key, encrypted_summoner_id);
 
         HttpClient::get(url)
     }

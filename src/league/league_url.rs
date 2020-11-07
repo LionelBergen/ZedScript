@@ -50,6 +50,9 @@ impl LeagueUrl {
     const GET_SUMMONER_BY_PUIID_URL: &'static str = "https://%region%.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/%puuid%?api_key=%apikey%";
     const GET_SUMMONER_BY_SUMMONER_ID_URL: &'static str = "https://%region%.api.riotgames.com/lol/summoner/v4/summoners/%summonerid%?api_key=%apikey%";
 
+    // THIRD-PARTY-CODE-V4
+    const GET_THIRD_PARTY_CODE_URL: &'static str = "https://%region%.api.riotgames.com/lol/platform/v4/third-party-code/by-summoner/%summonerid%?api_key=%apikey%";
+
     // TOURNAMENT-STUB-V4
     const CREATE_TOURNAMENT_CODE_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/codes?api_key=%apikey%";
     const TOURNAMENT_EVENTS_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/lobby-events/by-code/%tournamentcode%?api_key=%apikey%";
@@ -170,6 +173,10 @@ impl LeagueUrl {
 
     pub fn get_summoner_by_summoner_id(lol_api_key: &LolApiKey, summoner_id: &str) -> String {
         return Self::get_url_from_api_key_with_summoner_id(Self::GET_SUMMONER_BY_SUMMONER_ID_URL, lol_api_key, summoner_id);
+    }
+
+    pub fn get_third_party_code(lol_api_key: &LolApiKey, summoner_id: &str) -> String {
+        return Self::get_url_from_api_key_with_summoner_id(Self::GET_THIRD_PARTY_CODE_URL, lol_api_key, summoner_id);
     }
 
     pub fn create_tournament_mock(lol_api_key: &LolApiKey) -> String {
