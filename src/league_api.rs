@@ -14,18 +14,13 @@ use crate::api_structs::clash::lol_team_dto::{PlayerDto, TeamDto};
 use crate::api_structs::league::lol_league_entry_dto::LeagueEntryDTO;
 use crate::api_structs::league::lol_league_list_dto::LeagueListDTO;
 use crate::api_structs::status::lol_shard_data::ShardStatus;
+use crate::api_structs::match_v4::lol_match_dto::MatchDto;
+use crate::api_structs::match_v4::lol_match_list_dto::MatchListDto;
+use crate::api_structs::match_v4::lol_match_timeline_dto::MatchTimelineDto;
 
 pub struct RiotApi {}
 
 impl RiotApi {
-    // MATCH-V4
-    const GET_MATCH: &'static str =
-        "https://%region%.api.riotgames.com/lol/match/v4/matches/%matchid%?api_key=%apikey%";
-    const GET_MATCHLIST_URL: &'static str = "https://%region%.api.riotgames.com/lol/match/v4/matchlists/by-account/%accountid%?api_key=%apikey%";
-    const GET_MATCH_TIMELINE: &'static str = "https://%region%.api.riotgames.com/lol/match/v4/timelines/by-match/%matchid%?api_key=%apikey%";
-    const GET_MATCHES_BY_TOURNAMENT_CODE: &'static str =  "https://%region%.api.riotgames.com/lol/match/v4/matches/by-tournament-code/%tournamentcode%?api_key=%apikey%";
-    const GET_MATCH_BY_ID_AND_TOURNAMENT_CODE: &'static str =  "https://%region%.api.riotgames.com/lol/match/v4/matches/%matchid%/by-tournament-code/%tournamentcode%?api_key=%apikey%";
-
     // SPECTATOR-V4
     const GET_ACTIVE_GAMES: &'static str = "https://%region%.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/%summonerid%?api_key=%apikey%";
     const GET_FEATURED_GAMES_URL: &'static str =
@@ -357,18 +352,74 @@ impl RiotApi {
         }
     }
 
-    pub fn get_match(match_id: &str, lol_api_key: &LolApiKey) -> Result<Game, HttpError> {
-        let url: String = Self::get_url_from_api_key_with_match_id(
-            RiotApi::GET_MATCH,
-            lol_api_key,
-            match_id,
-        );
+    pub fn get_match(lol_api_key: &LolApiKey, match_id: &str) -> Result<MatchDto, HttpError> {
+        let url: String = LeagueUrl::get_match(lol_api_key, match_id);
         let http_result = HttpClient::get(url);
 
         match http_result {
             Ok(result) => {
                 println!("{}", result);
-                let league_game_result: Game = serde_json::from_str(&result).unwrap();
+                let league_game_result: MatchDto = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_match_list(lol_api_key: &LolApiKey, account_id: &str) -> Result<MatchListDto, HttpError> {
+        let url: String = LeagueUrl::get_match_list(lol_api_key, account_id);
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                println!("{}", result);
+                let league_game_result: MatchListDto = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_match_timeline(lol_api_key: &LolApiKey, match_id: &str) -> Result<MatchTimelineDto, HttpError> {
+        let url: String = LeagueUrl::get_match_timeline(lol_api_key, match_id);
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                println!("{}", result);
+                let league_game_result: MatchTimelineDto = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_matches_by_tournament(lol_api_key: &LolApiKey, tournament_code: &str) -> Result<Vec<i64>, HttpError> {
+        let url: String = LeagueUrl::get_matches_by_tournament_code(lol_api_key, tournament_code);
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                println!("{}", result);
+                let league_game_result: Vec<i64> = serde_json::from_str(&result).unwrap();
+
+                Ok(league_game_result)
+            }
+            Err(error) => Err(error),
+        }
+    }
+
+    pub fn get_match_by_match_id_and_tournament(lol_api_key: &LolApiKey, match_id: &str, tournament_code: &str) -> Result<MatchDto, HttpError> {
+        let url: String = LeagueUrl::get_matches_by_match_id_and_tournament_code(lol_api_key, match_id, tournament_code);
+        let http_result = HttpClient::get(url);
+
+        match http_result {
+            Ok(result) => {
+                println!("{}", result);
+                let league_game_result: MatchDto = serde_json::from_str(&result).unwrap();
 
                 Ok(league_game_result)
             }
@@ -388,28 +439,6 @@ impl RiotApi {
             Ok(result) => {
                 println!("{}", result);
                 let league_game_result: Game = serde_json::from_str(&result).unwrap();
-
-                Ok(league_game_result)
-            }
-            Err(error) => Err(error),
-        }
-    }
-
-    pub fn get_match_list(
-        account_id: &str,
-        lol_api_key: &LolApiKey,
-    ) -> Result<MatchList, HttpError> {
-        let url: String = Self::get_url_from_api_key_with_account_id(
-            RiotApi::GET_MATCHLIST_URL,
-            lol_api_key,
-            account_id,
-        );
-        let http_result = HttpClient::get(url);
-
-        match http_result {
-            Ok(result) => {
-                println!("{}", result);
-                let league_game_result: MatchList = serde_json::from_str(&result).unwrap();
 
                 Ok(league_game_result)
             }

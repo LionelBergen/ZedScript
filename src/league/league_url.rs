@@ -32,6 +32,14 @@ impl LeagueUrl {
     // LOL-STATUS-V3
     const GET_STATUS_URL: &'static str = "https://%region%.api.riotgames.com/lol/status/v3/shard-data?api_key=%apikey%";
 
+    // MATCH-V4
+    const GET_MATCH: &'static str =
+        "https://%region%.api.riotgames.com/lol/match/v4/matches/%matchid%?api_key=%apikey%";
+    const GET_MATCHLIST: &'static str = "https://%region%.api.riotgames.com/lol/match/v4/matchlists/by-account/%accountid%?api_key=%apikey%";
+    const GET_MATCH_TIMELINE: &'static str = "https://%region%.api.riotgames.com/lol/match/v4/timelines/by-match/%matchid%?api_key=%apikey%";
+    const GET_MATCHES_BY_TOURNAMENT_CODE: &'static str =  "https://%region%.api.riotgames.com/lol/match/v4/matches/by-tournament-code/%tournamentcode%?api_key=%apikey%";
+    const GET_MATCH_BY_ID_AND_TOURNAMENT_CODE: &'static str =  "https://%region%.api.riotgames.com/lol/match/v4/matches/%matchid%/by-tournament-code/%tournamentcode%?api_key=%apikey%";
+
     // TOURNAMENT-STUB-V4
     const CREATE_TOURNAMENT_CODE_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/codes?api_key=%apikey%";
     const TOURNAMENT_EVENTS_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/lobby-events/by-code/%tournamentcode%?api_key=%apikey%";
@@ -110,6 +118,26 @@ impl LeagueUrl {
         return Self::get_url_from_api_key(Self::GET_STATUS_URL, lol_api_key);
     }
 
+    pub fn get_match(lol_api_key: &LolApiKey, match_id: &str) -> String {
+        return Self::get_url_from_api_key_with_match_tournament(Self::GET_MATCH, lol_api_key, match_id, "");
+    }
+
+    pub fn get_match_list(lol_api_key: &LolApiKey, account_id: &str) -> String {
+        return Self::get_url_from_api_key(Self::GET_MATCHLIST, lol_api_key).replace("%accountid%", account_id);
+    }
+
+    pub fn get_match_timeline(lol_api_key: &LolApiKey, match_id: &str) -> String {
+        return Self::get_url_from_api_key_with_match_tournament(Self::GET_MATCH_TIMELINE, lol_api_key, match_id, "");
+    }
+
+    pub fn get_matches_by_tournament_code(lol_api_key: &LolApiKey, tournament_code: &str) -> String {
+        return Self::get_url_from_api_key_with_match_tournament(Self::GET_MATCHES_BY_TOURNAMENT_CODE, lol_api_key, "", tournament_code);
+    }
+
+    pub fn get_matches_by_match_id_and_tournament_code(lol_api_key: &LolApiKey, match_id: &str, tournament_code: &str) -> String {
+        return Self::get_url_from_api_key_with_match_tournament(Self::GET_MATCH_BY_ID_AND_TOURNAMENT_CODE, lol_api_key, match_id, tournament_code);
+    }
+
     pub fn create_tournament_mock(lol_api_key: &LolApiKey) -> String {
         return Self::get_url_from_api_key(Self::CREATE_TOURNAMENT_MOCK, lol_api_key);
     }
@@ -143,5 +171,11 @@ impl LeagueUrl {
             .replace("%queue%", queue)
             .replace("%tier%", tier)
             .replace("%division%", division)
+    }
+
+    fn get_url_from_api_key_with_match_tournament(original_url: &str, lol_api_key: &LolApiKey, match_id: &str, tournament_code: &str) -> String {
+        Self::get_url_from_api_key(original_url, lol_api_key)
+            .replace("%matchid%", match_id)
+            .replace("%tournamentcode%", tournament_code)
     }
 }

@@ -12,6 +12,9 @@ use zed_script::api_structs::clash::lol_team_dto::PlayerDto;
 // LeagueOfSausage account id
 const LEAGUE_ACCOUNT_ID: &str = "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY";
 const LEAGUE_SUMMONER_ID: &str = "n-zcEtpy2E4JUt8AksUMpkEB9SsBw51-6b6rDF27wvZ1YYw";
+
+// TODO: Find different types of matches, such as dominion, ARAM etc. Also find a very old match to test 'Runes', which are now absolete.
+// TODO: Find a few different match timelines to test out....
 const MATCH_ID: &str = "3609154837";
 
 const MOCK_PROVIDER_ID: &str = "228";
@@ -384,7 +387,7 @@ fn test_get_match() {
     pause_execution();
     let lol_api_key = get_league_api_key();
 
-    let result = league_api::RiotApi::get_match(MATCH_ID, &lol_api_key);
+    let result = league_api::RiotApi::get_match(&lol_api_key, MATCH_ID);
     assert!(result.is_ok());
 }
 
@@ -393,6 +396,34 @@ fn test_get_match_list() {
     pause_execution();
     let lol_api_key = get_league_api_key();
 
-    let result = league_api::RiotApi::get_match_list(LEAGUE_ACCOUNT_ID, &lol_api_key);
+    let result = league_api::RiotApi::get_match_list(&lol_api_key, LEAGUE_ACCOUNT_ID);
+    assert!(result.is_ok());
+}
+
+#[test]
+fn test_get_match_timeline() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+
+    let result = league_api::RiotApi::get_match_timeline(&lol_api_key, MATCH_ID);
+    assert!(result.is_ok());
+}
+
+#[test]
+fn test_get_matches_by_tournmanet_code() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+
+    let result = league_api::RiotApi::get_matches_by_tournament(&lol_api_key, MOCK_TOURNAMENT_ID);
+    assert!(result.is_ok());
+}
+
+// TODO: need tournamentCode and matchid
+#[test]
+fn test_get_match_by_match_id_and_tournament() {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+
+    let result = league_api::RiotApi::get_match_by_match_id_and_tournament(&lol_api_key, MOCK_TOURNAMENT_ID, MOCK_TOURNAMENT_ID);
     assert!(result.is_ok());
 }

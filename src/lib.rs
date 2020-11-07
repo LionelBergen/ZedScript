@@ -30,6 +30,11 @@ pub mod api_structs {
     pub mod status {
         pub mod lol_shard_data;
     }
+    pub mod match_v4 {
+        pub mod lol_match_dto;
+        pub mod lol_match_list_dto;
+        pub mod lol_match_timeline_dto;
+    }
 }
 
 pub mod league {
