@@ -359,7 +359,7 @@ fn test_get_featured_games() {
 }
 
 #[test]
-fn test_get_active_games() {
+fn test_get_active_game() {
     pause_execution();
     let lol_api_key = get_league_api_key();
 
@@ -378,7 +378,7 @@ fn test_get_active_games() {
     let summoner_id_active_in_game = summoner.unwrap();
     let active_game_summoner_id = &summoner_id_active_in_game.summoner_id;
 
-    let result = league_api::RiotApi::get_active_games(&active_game_summoner_id, &lol_api_key);
+    let result = league_api::RiotApi::get_active_game(&active_game_summoner_id, &lol_api_key);
     assert!(result.is_ok());
 }
 

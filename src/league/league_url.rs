@@ -40,6 +40,10 @@ impl LeagueUrl {
     const GET_MATCHES_BY_TOURNAMENT_CODE: &'static str =  "https://%region%.api.riotgames.com/lol/match/v4/matches/by-tournament-code/%tournamentcode%?api_key=%apikey%";
     const GET_MATCH_BY_ID_AND_TOURNAMENT_CODE: &'static str =  "https://%region%.api.riotgames.com/lol/match/v4/matches/%matchid%/by-tournament-code/%tournamentcode%?api_key=%apikey%";
 
+    // SPECTATOR-V4
+    const GET_ACTIVE_GAMES: &'static str = "https://%region%.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/%summonerid%?api_key=%apikey%";
+    const GET_FEATURED_GAMES_URL: &'static str = "https://%region%.api.riotgames.com/lol/spectator/v4/featured-games?api_key=%apikey%";
+
     // TOURNAMENT-STUB-V4
     const CREATE_TOURNAMENT_CODE_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/codes?api_key=%apikey%";
     const TOURNAMENT_EVENTS_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/lobby-events/by-code/%tournamentcode%?api_key=%apikey%";
@@ -136,6 +140,14 @@ impl LeagueUrl {
 
     pub fn get_matches_by_match_id_and_tournament_code(lol_api_key: &LolApiKey, match_id: &str, tournament_code: &str) -> String {
         return Self::get_url_from_api_key_with_match_tournament(Self::GET_MATCH_BY_ID_AND_TOURNAMENT_CODE, lol_api_key, match_id, tournament_code);
+    }
+
+    pub fn get_active_games(lol_api_key: &LolApiKey, summoner_id: &str) -> String {
+        return Self::get_url_from_api_key_with_summoner_id(Self::GET_ACTIVE_GAMES, lol_api_key, summoner_id);
+    }
+
+    pub fn get_featured_games(lol_api_key: &LolApiKey) -> String {
+        return Self::get_url_from_api_key_with_summoner_id(Self::GET_FEATURED_GAMES_URL, lol_api_key, "");
     }
 
     pub fn create_tournament_mock(lol_api_key: &LolApiKey) -> String {

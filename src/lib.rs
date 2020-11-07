@@ -35,6 +35,12 @@ pub mod api_structs {
         pub mod lol_match_list_dto;
         pub mod lol_match_timeline_dto;
     }
+    pub mod spectator {
+        pub mod lol_current_game_info;
+        pub mod lol_banned_champion;
+        pub mod lol_featured_games;
+        pub mod lol_observer;
+    }
 }
 
 pub mod league {

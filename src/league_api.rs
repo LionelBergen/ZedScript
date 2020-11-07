@@ -17,15 +17,12 @@ use crate::api_structs::status::lol_shard_data::ShardStatus;
 use crate::api_structs::match_v4::lol_match_dto::MatchDto;
 use crate::api_structs::match_v4::lol_match_list_dto::MatchListDto;
 use crate::api_structs::match_v4::lol_match_timeline_dto::MatchTimelineDto;
+use crate::api_structs::spectator::lol_current_game_info::CurrentGameInfo;
+use crate::api_structs::spectator::lol_featured_games::FeaturedGames;
 
 pub struct RiotApi {}
 
 impl RiotApi {
-    // SPECTATOR-V4
-    const GET_ACTIVE_GAMES: &'static str = "https://%region%.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/%summonerid%?api_key=%apikey%";
-    const GET_FEATURED_GAMES_URL: &'static str =
-        "https://%region%.api.riotgames.com/lol/spectator/v4/featured-games?api_key=%apikey%";
-
     // SUMMONER-V4
     const GET_SUMMONER_BY_ACCOUNT_ID: &'static str = "https://%region%.api.riotgames.com/lol/summoner/v4/summoners/by-account/%accountid%?api_key=%apikey%";
     const SUMMONER_BY_NAME_URL: &'static str = "https://%region%.api.riotgames.com/lol/summoner/v4/summoners/by-name/%name%?api_key=%apikey%";
@@ -338,13 +335,13 @@ impl RiotApi {
         HttpClient::get(url)
     }
 
-    pub fn get_featured_games(lol_api_key: &LolApiKey) -> Result<GameList, HttpError> {
-        let url: String = Self::get_url_from_api_key(RiotApi::GET_FEATURED_GAMES_URL, lol_api_key);
+    pub fn get_featured_games(lol_api_key: &LolApiKey) -> Result<FeaturedGames, HttpError> {
+        let url: String = LeagueUrl::get_featured_games(lol_api_key);
         let http_result = HttpClient::get(url);
 
         match http_result {
             Ok(result) => {
-                let league_game_result: GameList = serde_json::from_str(&result).unwrap();
+                let league_game_result: FeaturedGames = serde_json::from_str(&result).unwrap();
 
                 Ok(league_game_result)
             }
@@ -427,18 +424,14 @@ impl RiotApi {
         }
     }
 
-    pub fn get_active_games(summoner_id: &str, lol_api_key: &LolApiKey) -> Result<Game, HttpError> {
-        let url: String = Self::get_url_from_api_key_with_summoner_id(
-            RiotApi::GET_ACTIVE_GAMES,
-            lol_api_key,
-            summoner_id,
-        );
+    pub fn get_active_game(summoner_id: &str, lol_api_key: &LolApiKey) -> Result<CurrentGameInfo, HttpError> {
+        let url: String = LeagueUrl::get_active_games(lol_api_key, summoner_id);
         let http_result = HttpClient::get(url);
 
         match http_result {
             Ok(result) => {
                 println!("{}", result);
-                let league_game_result: Game = serde_json::from_str(&result).unwrap();
+                let league_game_result: CurrentGameInfo = serde_json::from_str(&result).unwrap();
 
                 Ok(league_game_result)
             }
