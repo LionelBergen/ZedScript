@@ -14,9 +14,6 @@ pub mod api_structs {
     pub mod champion {
         pub mod lol_champion_info;
     }
-    pub mod tournament {
-        pub mod lol_lobby_event_dto_wrapper;
-    }
     pub mod clash {
         pub mod lol_tournament_dto;
         pub mod lol_team_dto;
@@ -43,6 +40,10 @@ pub mod api_structs {
     }
     pub mod summoner {
         pub mod lol_summoner_dto;
+    }
+    pub mod tournament {
+        pub mod lol_lobby_event_dto_wrapper;
+        pub mod lol_tournament_code_dto;
     }
 }
 

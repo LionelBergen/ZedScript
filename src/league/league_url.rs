@@ -2,6 +2,7 @@ use crate::api_structs::lol_api_key::LolApiKey;
 
 pub struct LeagueUrl {}
 
+// TODO: run through optional params. There are some missing such as tournament-mock
 impl LeagueUrl {
     // CHAMPION-MASTERY-V4
     const CHAMPION_MASTERY_BY_SUMMONER_ID: &'static str = "https://%region%.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/%summonerid%?api_key=%apikey%";
@@ -59,6 +60,14 @@ impl LeagueUrl {
     const CREATE_PROVIDER_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/providers?api_key=%apikey%";
     const CREATE_TOURNAMENT_MOCK: &'static str = "https://americas.api.riotgames.com/lol/tournament-stub/v4/tournaments?api_key=%apikey%";
 
+    // TOURNAMENT_V4
+    const CREATE_TOURNAMENT_CODE: &'static str = "https://americas.api.riotgames.com/lol/tournament/v4/codes?api_key=%apikey%";
+    const GET_TOURNAMENT: &'static str = "https://americas.api.riotgames.com/lol/tournament/v4/codes/%tournamentcode%?api_key=%apikey%";
+    const UPDATE_TOURNAMENT: &'static str = "https://americas.api.riotgames.com/lol/tournament/v4/codes/%tournamentcode%?api_key=%apikey%";
+    const TOURNAMENT_EVENTS: &'static str = "https://americas.api.riotgames.com/lol/tournament/v4/lobby-events/by-code/%tournamentcode%?api_key=%apikey%";
+    const CREATE_PROVIDER: &'static str = "https://americas.api.riotgames.com/lol/tournament/v4/providers?api_key=%apikey%";
+    const CREATE_TOURNAMENT: &'static str = "https://americas.api.riotgames.com/lol/tournament/v4/tournaments?api_key=%apikey%";
+
     pub fn get_champion_mastery(lol_api_key: &LolApiKey, summoner_id: &str) -> String {
         return Self::get_url_from_api_key_with_summoner_id(Self::CHAMPION_MASTERY_BY_SUMMONER_ID, lol_api_key, summoner_id);
     }
@@ -77,6 +86,10 @@ impl LeagueUrl {
 
     pub fn create_provider_mock(lol_api_key: &LolApiKey) -> String {
         return Self::get_url_from_api_key(Self::CREATE_PROVIDER_MOCK, lol_api_key);
+    }
+
+    pub fn create_provider(lol_api_key: &LolApiKey) -> String {
+        return Self::get_url_from_api_key(Self::CREATE_PROVIDER, lol_api_key);
     }
 
     pub fn get_clash_players(lol_api_key: &LolApiKey, summoner_id: &str) -> String {
@@ -183,12 +196,32 @@ impl LeagueUrl {
         return Self::get_url_from_api_key(Self::CREATE_TOURNAMENT_MOCK, lol_api_key);
     }
 
+    pub fn create_tournament(lol_api_key: &LolApiKey) -> String {
+        return Self::get_url_from_api_key(Self::CREATE_TOURNAMENT, lol_api_key);
+    }
+
     pub fn get_tournament_lobby_events_mock(lol_api_key: &LolApiKey, tournament_code: &str) -> String {
         return Self::get_url_from_api_key(Self::TOURNAMENT_EVENTS_MOCK, lol_api_key).replace("%tournamentcode%", tournament_code);
     }
 
-    pub fn create_tournament_code_mock(lol_api_key: &LolApiKey, tournament_code: &str) -> String {
+    pub fn create_tournament_code_mock(lol_api_key: &LolApiKey) -> String {
         return Self::get_url_from_api_key(Self::CREATE_TOURNAMENT_CODE_MOCK, lol_api_key);
+    }
+
+    pub fn create_tournament_code(lol_api_key: &LolApiKey) -> String {
+        return Self::get_url_from_api_key(Self::CREATE_TOURNAMENT_CODE, lol_api_key);
+    }
+
+    pub fn get_tournament(lol_api_key: &LolApiKey, tournament_code: &str) -> String {
+        return Self::get_url_from_api_key(Self::GET_TOURNAMENT, lol_api_key).replace("%tournamentcode%", tournament_code);
+    }
+
+    pub fn update_tournament(lol_api_key: &LolApiKey, tournament_code: &str) -> String {
+        return Self::get_url_from_api_key(Self::UPDATE_TOURNAMENT, lol_api_key).replace("%tournamentcode%", tournament_code);
+    }
+
+    pub fn get_tournament_lobby_events(lol_api_key: &LolApiKey, tournament_code: &str) -> String {
+        return Self::get_url_from_api_key(Self::TOURNAMENT_EVENTS, lol_api_key).replace("%tournamentcode%", tournament_code);
     }
 
     fn get_url_from_api_key_with_summoner_champion_id(original_url: &str, lol_api_key: &LolApiKey, summoner_id: &str, champion_id: &str) -> String {

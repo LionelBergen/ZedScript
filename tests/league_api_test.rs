@@ -248,7 +248,7 @@ fn test_create_tournament_mock() {
     pause_execution();
     let lol_api_key = get_league_api_key();
     // find LeagueOfSausage/DrMundo
-    let result = league_api::RiotApi::create_tournament_mock(&lol_api_key, "https://www.google.com", MOCK_PROVIDER_ID, Option::None);
+    let result = league_api::RiotApi::create_tournament_mock(&lol_api_key, MOCK_PROVIDER_ID, Option::Some("name"));
 
     let unwrapped_result = result.unwrap();
     assert_eq!(MOCK_TOURNAMENT_ID, unwrapped_result);
@@ -263,6 +263,8 @@ fn test_get_tournament_lobby_events_mock() {
     assert!(result.is_ok());
     assert!(!result.unwrap().events.is_empty());
 }
+
+// TODO: add tests for TROUNAMENT-V4. Use a Mock for the http calls..
 
 #[test]
 fn test_get_summoner_by_account_id() {

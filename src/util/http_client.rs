@@ -1,5 +1,7 @@
 use crate::util::http_error::HttpError;
 use std::collections::HashMap;
+use reqwest::blocking::Response;
+use reqwest::Error;
 
 pub struct HttpClient {}
 
@@ -7,19 +9,22 @@ pub struct HttpClient {}
  * Class to handle HTTP calls. Basically just a wrapper for an external HTTP client, to make management/changes easier
 */
 impl HttpClient {
-    pub fn get(url: String) -> Result<String, HttpError> {
-        Self::request(url, true, None)
+    pub fn get(url: &str) -> Result<String, HttpError> {
+        let http_result = Self::http_get_result(url.parse().unwrap());
+        Self::request(&*url, http_result)
     }
 
     pub fn post(url: String, json_paramaters: Option<HashMap<&str, &str>>) -> Result<String, HttpError> {
-        Self::request(url, false, json_paramaters)
+        let http_result = Self::http_post_result(&url, json_paramaters);
+        Self::request(&*url, http_result)
     }
 
-    pub fn request(url: String, is_get: bool, post_paramaters: Option<HashMap<&str, &str>>) -> Result<String, HttpError> {
-        // TODO: remove
-        println!("Executing url: {}", url);
-        let http_result = if is_get {Self::http_get_result(url) } else {Self::http_post_result(url, post_paramaters) };
+    pub fn put(url: String, json_parameters: Option<HashMap<&str, &str>>) -> Result<String, HttpError> {
+        let http_result = Self::http_put_result(&url, json_parameters);
+        Self::request(&*url, http_result)
+    }
 
+    pub fn request(url: &str, http_result: Result<Response, Error>) -> Result<String, HttpError> {
         match http_result {
             Ok(result) => {
                 if result.status() == 200 {
@@ -50,12 +55,24 @@ impl HttpClient {
         }
     }
 
+    fn http_put_result(url: &String, json_parameters: Option<HashMap<&str, &str>>) -> Result<reqwest::blocking::Response, reqwest::Error> {
+        let mut request_builder = reqwest::blocking::Client::new().put(url)
+            .header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
+
+        if json_parameters.is_some() {
+            request_builder = request_builder.json(&json_parameters);
+        }
+
+        request_builder
+            .send()
+    }
+
     fn http_get_result(url: String) -> Result<reqwest::blocking::Response, reqwest::Error> {
         reqwest::blocking::get(&url)
     }
 
-    fn http_post_result(url: String, json_parameters: Option<HashMap<&str, &str>>) -> Result<reqwest::blocking::Response, reqwest::Error> {
-        let mut request_builder = reqwest::blocking::Client::new().post(&url)
+    fn http_post_result(url: &String, json_parameters: Option<HashMap<&str, &str>>) -> Result<reqwest::blocking::Response, reqwest::Error> {
+        let mut request_builder = reqwest::blocking::Client::new().post(url)
             .header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8");
 
         if json_parameters.is_some() {
