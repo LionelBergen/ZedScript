@@ -10,6 +10,8 @@ use zed_script::util::http_error::HttpError;
 use zed_script::api_structs::clash::lol_team_dto::PlayerDto;
 use zed_script::api_structs::summoner::lol_summoner_dto::SummonerDTO;
 
+use serial_test::serial;
+
 // LeagueOfSausage account id
 const LEAGUE_ACCOUNT_ID: &str = "QfMypRv2CyU9Q9w3MXyFfw9rt6UPhlsuOkDc-1VYfhuy1sY";
 const LEAGUE_SUMMONER_ID: &str = "n-zcEtpy2E4JUt8AksUMpkEB9SsBw51-6b6rDF27wvZ1YYw";
@@ -17,9 +19,6 @@ const LEAGUE_SUMMONER_ID: &str = "n-zcEtpy2E4JUt8AksUMpkEB9SsBw51-6b6rDF27wvZ1YY
 // TODO: Find different types of matches, such as dominion, ARAM etc. Also find a very old match to test 'Runes', which are now absolete.
 // TODO: Find a few different match timelines to test out....
 const MATCH_ID: &str = "3609154837";
-
-const MOCK_PROVIDER_ID: &str = "228";
-const MOCK_TOURNAMENT_ID: &str = "1158";
 
 fn get_league_api_token() -> String {
     return String::from(&env::var("LEAGUE_API_KEY").unwrap());
@@ -40,6 +39,7 @@ fn pause_execution() {
 }
 
 #[test]
+#[serial]
 fn test_get_status_unauthorized() {
     pause_execution();
     // no api key specified, expect unauthorized response
@@ -57,6 +57,7 @@ fn test_get_status_unauthorized() {
 }
 
 #[test]
+#[serial]
 fn test_get_status() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -66,6 +67,7 @@ fn test_get_status() {
 }
 
 #[test]
+#[serial]
 fn test_get_champion_mastery() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -77,6 +79,7 @@ fn test_get_champion_mastery() {
 }
 
 #[test]
+#[serial]
 fn test_get_champion_mastery_by_champion() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -88,6 +91,7 @@ fn test_get_champion_mastery_by_champion() {
 }
 
 #[test]
+#[serial]
 fn test_get_champion_mastery_score() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -99,6 +103,7 @@ fn test_get_champion_mastery_score() {
 }
 
 #[test]
+#[serial]
 fn test_get_champion_rotation() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -109,6 +114,7 @@ fn test_get_champion_rotation() {
 }
 
 #[test]
+#[serial]
 fn test_get_clash_players() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -119,7 +125,7 @@ fn test_get_clash_players() {
 }
 
 // TODO:
-#[test]
+/*#[test]
 fn test_get_clash_team() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -127,10 +133,10 @@ fn test_get_clash_team() {
 
     let unwrapped_result = result.unwrap();
     assert_eq!("gg", unwrapped_result.name);
-}
+}*/
 
 // TODO:
-#[test]
+/*#[test]
 fn test_get_clash_tournament_by_team_id() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -138,9 +144,10 @@ fn test_get_clash_tournament_by_team_id() {
 
     let unwrapped_result = result.unwrap();
     assert_eq!("gg", unwrapped_result.name_key);
-}
+}*/
 
 #[test]
+#[serial]
 fn test_get_clash_tournaments() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -151,6 +158,7 @@ fn test_get_clash_tournaments() {
 }
 
 #[test]
+#[serial]
 fn test_get_clash_tournament() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -163,6 +171,7 @@ fn test_get_clash_tournament() {
 }
 
 #[test]
+#[serial]
 fn test_get_league_entries() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -173,6 +182,7 @@ fn test_get_league_entries() {
 }
 
 #[test]
+#[serial]
 fn test_get_challenger_league() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -183,6 +193,7 @@ fn test_get_challenger_league() {
 }
 
 #[test]
+#[serial]
 fn test_get_league_entries_by_summoner_id() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -193,6 +204,7 @@ fn test_get_league_entries_by_summoner_id() {
 }
 
 #[test]
+#[serial]
 fn test_get_all_league_entries() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -203,6 +215,7 @@ fn test_get_all_league_entries() {
 }
 
 #[test]
+#[serial]
 fn test_get_grandmaster_league() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -213,6 +226,7 @@ fn test_get_grandmaster_league() {
 }
 
 #[test]
+#[serial]
 fn test_get_league() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -223,6 +237,7 @@ fn test_get_league() {
 }
 
 #[test]
+#[serial]
 fn test_get_master_league() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -233,33 +248,36 @@ fn test_get_master_league() {
 }
 
 #[test]
+#[serial]
 fn test_create_provider_mock() {
     pause_execution();
     let lol_api_key = get_league_api_key();
     // find LeagueOfSausage/DrMundo
     let result = league_api::RiotApi::create_provider_mock(&lol_api_key, "https://www.google.com");
 
-    let unwrapped_result = result.unwrap();
-    assert_eq!(MOCK_PROVIDER_ID, unwrapped_result);
+    let unwrapped_result : i32 = result.unwrap().parse().unwrap();
+    assert!(unwrapped_result > 0);
 }
 
 #[test]
+#[serial]
 fn test_create_tournament_mock() {
     pause_execution();
     let lol_api_key = get_league_api_key();
     // find LeagueOfSausage/DrMundo
-    let result = league_api::RiotApi::create_tournament_mock(&lol_api_key, MOCK_PROVIDER_ID, Option::Some("name"));
+    let result = league_api::RiotApi::create_tournament_mock(&lol_api_key, &get_test_provider(), Option::Some("name"));
 
-    let unwrapped_result = result.unwrap();
-    assert_eq!(MOCK_TOURNAMENT_ID, unwrapped_result);
+    let unwrapped_result : i32 = result.unwrap().parse().unwrap();
+    assert!(unwrapped_result > 0);
 }
 
 #[test]
+#[serial]
 fn test_get_tournament_lobby_events_mock() {
     pause_execution();
     let lol_api_key = get_league_api_key();
 
-    let result = league_api::RiotApi::get_tournament_lobby_events_mock(&lol_api_key, MOCK_TOURNAMENT_ID);
+    let result = league_api::RiotApi::get_tournament_lobby_events_mock(&lol_api_key, &get_test_tournament());
     assert!(result.is_ok());
     assert!(!result.unwrap().events.is_empty());
 }
@@ -267,6 +285,7 @@ fn test_get_tournament_lobby_events_mock() {
 // TODO: add tests for TROUNAMENT-V4. Use a Mock for the http calls..
 
 #[test]
+#[serial]
 fn test_get_summoner_by_account_id() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -278,6 +297,7 @@ fn test_get_summoner_by_account_id() {
 }
 
 #[test]
+#[serial]
 fn test_get_summoner_by_puuid_id() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -289,6 +309,7 @@ fn test_get_summoner_by_puuid_id() {
 }
 
 #[test]
+#[serial]
 fn test_get_summoner_by_summoner_id() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -303,6 +324,7 @@ fn test_get_summoner_by_summoner_id() {
 }
 
 #[test]
+#[serial]
 fn test_get_summoner() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -319,6 +341,7 @@ fn test_get_summoner() {
 }
 
 #[test]
+#[serial]
 fn test_get_summoner_not_exist() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -333,6 +356,7 @@ fn test_get_summoner_not_exist() {
 
 // TODO: proper test somehow
 #[test]
+#[serial]
 fn test_get_third_party_code() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -347,6 +371,7 @@ fn test_get_third_party_code() {
 }
 
 #[test]
+#[serial]
 fn test_get_featured_games() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -356,6 +381,7 @@ fn test_get_featured_games() {
 }
 
 #[test]
+#[serial]
 fn test_get_active_game() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -380,6 +406,7 @@ fn test_get_active_game() {
 }
 
 #[test]
+#[serial]
 fn test_get_match() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -389,6 +416,7 @@ fn test_get_match() {
 }
 
 #[test]
+#[serial]
 fn test_get_match_list() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -398,6 +426,7 @@ fn test_get_match_list() {
 }
 
 #[test]
+#[serial]
 fn test_get_match_timeline() {
     pause_execution();
     let lol_api_key = get_league_api_key();
@@ -406,21 +435,41 @@ fn test_get_match_timeline() {
     assert!(result.is_ok());
 }
 
+/*
+// TODO: I don't have API access for tournament stuff
 #[test]
-fn test_get_matches_by_tournmanet_code() {
+fn test_get_matches_by_tournament_code() {
     pause_execution();
     let lol_api_key = get_league_api_key();
 
-    let result = league_api::RiotApi::get_matches_by_tournament(&lol_api_key, MOCK_TOURNAMENT_ID);
-    assert!(result.is_ok());
+    league_api::RiotApi::get_matches_by_tournament(&lol_api_key, &get_test_tournament()).unwrap();
 }
+ */
 
 // TODO: need tournamentCode and matchid
-#[test]
+/*#[test]
 fn test_get_match_by_match_id_and_tournament() {
     pause_execution();
     let lol_api_key = get_league_api_key();
 
-    let result = league_api::RiotApi::get_match_by_match_id_and_tournament(&lol_api_key, MOCK_TOURNAMENT_ID, MOCK_TOURNAMENT_ID);
+    let tournamneMatchId = &get_test_tournament();
+
+    let result = league_api::RiotApi::get_match_by_match_id_and_tournament(&lol_api_key, tournamneMatchId, tournamneMatchId);
     assert!(result.is_ok());
+}*/
+
+fn get_test_tournament() -> String {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::create_tournament_mock(&lol_api_key, &get_test_provider(), Option::Some("name"));
+
+    result.unwrap()
+}
+
+fn get_test_provider() -> String {
+    pause_execution();
+    let lol_api_key = get_league_api_key();
+    let result = league_api::RiotApi::create_provider_mock(&lol_api_key, "https://www.google.com");
+
+    result.unwrap()
 }
