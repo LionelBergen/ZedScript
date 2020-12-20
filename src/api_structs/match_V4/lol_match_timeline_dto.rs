@@ -54,7 +54,7 @@ pub struct MatchEventDto {
     #[serde(rename = "creatorId")]
     pub creator_id: Option<i32>,
     #[serde(rename = "afterId")]
-    pub afterId: Option<i32>,
+    pub after_id: Option<i32>,
     #[serde(rename = "eventType")]
     pub event_type: Option<String>,
     #[serde(rename = "type")]

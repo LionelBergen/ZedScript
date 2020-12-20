@@ -25,7 +25,7 @@ pub struct MatchDto {
     #[serde(rename = "mapId")]
     pub map_id: i64,
     #[serde(rename = "gameMode")]
-    pub gameMode: String,
+    pub game_mode: String,
     pub participants: Vec<ParticipantDto>
 }
 
@@ -52,7 +52,8 @@ pub struct ParticipantDto {
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct MasteryDto {
     pub rank: i16,
-    pub masteryId: i16
+    #[serde(rename = "masteryId")]
+    pub mastery_id: i16
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
@@ -115,7 +116,7 @@ pub struct ParticipantStatsDto {
     #[serde(rename = "totalDamageDealt")]
     pub total_damage_dealt: i64,
     #[serde(rename = "timeCCingOthers")]
-    pub time_CCing_others: i64,
+    pub time_ccing_others: i64,
     #[serde(rename = "magicalDamageTaken")]
     pub magical_damage_taken: i64,
     #[serde(rename = "largestKillingSpree")]
@@ -198,25 +199,25 @@ pub struct ParticipantStatsDto {
     #[serde(rename = "item5")]
     pub item_5: i32,
     #[serde(rename = "playerScore0")]
-    pub playerScore_0: i32,
+    pub player_score_0: i32,
     #[serde(rename = "playerScore1")]
-    pub playerScore_1: i32,
+    pub player_score_1: i32,
     #[serde(rename = "playerScore2")]
-    pub playerScore_2: i32,
+    pub player_score_2: i32,
     #[serde(rename = "playerScore3")]
-    pub playerScore_3: i32,
+    pub player_score_3: i32,
     #[serde(rename = "playerScore4")]
-    pub playerScore_4: i32,
+    pub player_score_4: i32,
     #[serde(rename = "playerScore5")]
-    pub playerScore_5: i32,
+    pub player_score_5: i32,
     #[serde(rename = "playerScore6")]
-    pub playerScore_6: i32,
+    pub player_score_6: i32,
     #[serde(rename = "playerScore7")]
-    pub playerScore_7: i32,
+    pub player_score_7: i32,
     #[serde(rename = "playerScore8")]
-    pub playerScore_8: i32,
+    pub player_score_8: i32,
     #[serde(rename = "playerScore9")]
-    pub playerScore_9: i32,
+    pub player_score_9: i32,
     #[serde(rename = "perk0")]
     pub perk_0: i32,
     #[serde(rename = "perk0Var1")]
@@ -302,7 +303,7 @@ pub struct ParticipantTimelineDto {
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct RuneDto {
     #[serde(rename = "runeId")]
-    pub runeId: i32,
+    pub rune_id: i32,
     pub rank: i16
 }
 
@@ -364,7 +365,7 @@ pub struct PlayerDto {
     #[serde(rename = "matchHistoryUri")]
     match_history_uri: String,
     #[serde(rename = "currentAccountId")]
-    pub currentAccountId: String,
+    pub current_account_id: String,
     #[serde(rename = "currentPlatformId")]
     current_platform_id: String,
     #[serde(rename = "summonerName")]
