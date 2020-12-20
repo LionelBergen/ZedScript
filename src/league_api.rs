@@ -1,7 +1,4 @@
-use crate::api_structs::lol_account::LeagueAccount;
 use crate::api_structs::lol_api_key::LolApiKey;
-use crate::api_structs::lol_game::{Game, GameList};
-use crate::api_structs::lol_match_list::MatchList;
 use crate::util::http_client::HttpClient;
 use crate::util::http_error::HttpError;
 use crate::league::league_url::LeagueUrl;
@@ -305,7 +302,7 @@ impl RiotApi {
         let mut request_paramaters = HashMap::new();
         request_paramaters.insert("providerId", provider_id);
 
-        if (name_of_tournament.is_some()) {
+        if name_of_tournament.is_some() {
             request_paramaters.insert("name", name_of_tournament.unwrap());
         }
 
@@ -313,7 +310,7 @@ impl RiotApi {
     }
 
     pub fn create_tournament_code_mock(lol_api_key: &LolApiKey, provider_id: &str, name_of_tournament: Option<&str>) -> Result<String, HttpError> {
-        let url: String = LeagueUrl::create_tournament_mock(lol_api_key);
+        let url: String = LeagueUrl::create_tournament_code_mock(lol_api_key);
 
         let mut request_paramaters = HashMap::new();
         request_paramaters.insert("providerId", provider_id);
@@ -332,31 +329,31 @@ impl RiotApi {
         let mut request_paramaters = HashMap::new();
         request_paramaters.insert("tournamentId", tournament_id);
 
-        if (count.is_some()) {
+        if count.is_some() {
             request_paramaters.insert("count", count.unwrap());
         }
 
-        if (allowed_summoner_ids.is_some()) {
+        if allowed_summoner_ids.is_some() {
             request_paramaters.insert("allowedSummonerIds", allowed_summoner_ids.unwrap());
         }
 
-        if (map_type.is_some()) {
+        if map_type.is_some() {
             request_paramaters.insert("mapType", map_type.unwrap());
         }
 
-        if (meta_deta.is_some()) {
+        if meta_deta.is_some() {
             request_paramaters.insert("metaData", meta_deta.unwrap());
         }
 
-        if (pick_type.is_some()) {
+        if pick_type.is_some() {
             request_paramaters.insert("pickType", pick_type.unwrap());
         }
 
-        if (spectator_type.is_some()) {
+        if spectator_type.is_some() {
             request_paramaters.insert("spectatorType", spectator_type.unwrap());
         }
 
-        if (team_size.is_some()) {
+        if team_size.is_some() {
             request_paramaters.insert("teamSize", team_size.unwrap());
         }
 
@@ -378,7 +375,7 @@ impl RiotApi {
         let mut request_paramaters = HashMap::new();
         request_paramaters.insert("providerId", provider_id);
 
-        if (name_of_tournament.is_some()) {
+        if name_of_tournament.is_some() {
             request_paramaters.insert("name", name_of_tournament.unwrap());
         }
 
@@ -406,19 +403,19 @@ impl RiotApi {
 
         let mut request_paramaters = HashMap::new();
 
-        if (allowed_summoner_ids.is_some()) {
+        if allowed_summoner_ids.is_some() {
             request_paramaters.insert("allowedSummonerIds", allowed_summoner_ids.unwrap());
         }
 
-        if (map_type.is_some()) {
+        if map_type.is_some() {
             request_paramaters.insert("mapType", map_type.unwrap());
         }
 
-        if (pick_type.is_some()) {
+        if pick_type.is_some() {
             request_paramaters.insert("pickType", pick_type.unwrap());
         }
 
-        if (spectator_type.is_some()) {
+        if spectator_type.is_some() {
             request_paramaters.insert("spectatorType", spectator_type.unwrap());
         }
 
@@ -604,64 +601,5 @@ impl RiotApi {
             }
             Err(error) => Err(error),
         }
-    }
-
-    fn get_league_account_from_url(url: String) -> Result<LeagueAccount, HttpError> {
-        let http_result = HttpClient::get(&url);
-
-        match http_result {
-            Ok(result) => {
-                let league_account: LeagueAccount = serde_json::from_str(&result).unwrap();
-
-                Ok(league_account)
-            }
-            Err(error) => Err(error),
-        }
-    }
-
-    fn get_url_from_api_key(original_url: &str, lol_api_key: &LolApiKey) -> String {
-        original_url
-            .replace("%region%", lol_api_key.region.get_code())
-            .replace("%apikey%", &*lol_api_key.api_key)
-    }
-
-    fn get_url_from_api_key_with_name(
-        original_url: &str,
-        lol_api_key: &LolApiKey,
-        name: String,
-    ) -> String {
-        Self::get_url_from_api_key(original_url, lol_api_key).replace("%name%", name.as_str())
-    }
-
-    fn get_url_from_api_key_with_account_id(
-        original_url: &str,
-        lol_api_key: &LolApiKey,
-        account_id: &str,
-    ) -> String {
-        Self::get_url_from_api_key(original_url, lol_api_key).replace("%accountid%", account_id)
-    }
-
-    fn get_url_from_api_key_with_summoner_id(
-        original_url: &str,
-        lol_api_key: &LolApiKey,
-        account_id: &str,
-    ) -> String {
-        Self::get_url_from_api_key(original_url, lol_api_key).replace("%summonerid%", account_id)
-    }
-
-    fn get_url_from_api_key_with_puuid_id(
-        original_url: &str,
-        lol_api_key: &LolApiKey,
-        account_id: &str,
-    ) -> String {
-        Self::get_url_from_api_key(original_url, lol_api_key).replace("%PUUID%", account_id)
-    }
-
-    fn get_url_from_api_key_with_match_id(
-        original_url: &str,
-        lol_api_key: &LolApiKey,
-        match_id: &str,
-    ) -> String {
-        Self::get_url_from_api_key(original_url, lol_api_key).replace("%matchid%", match_id)
     }
 }

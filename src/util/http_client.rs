@@ -11,20 +11,20 @@ pub struct HttpClient {}
 impl HttpClient {
     pub fn get(url: &str) -> Result<String, HttpError> {
         let http_result = Self::http_get_result(url.parse().unwrap());
-        Self::request(&*url, http_result)
+        Self::request(http_result)
     }
 
     pub fn post(url: String, json_paramaters: Option<HashMap<&str, &str>>) -> Result<String, HttpError> {
         let http_result = Self::http_post_result(&url, json_paramaters);
-        Self::request(&*url, http_result)
+        Self::request(http_result)
     }
 
     pub fn put(url: String, json_parameters: Option<HashMap<&str, &str>>) -> Result<String, HttpError> {
         let http_result = Self::http_put_result(&url, json_parameters);
-        Self::request(&*url, http_result)
+        Self::request(http_result)
     }
 
-    pub fn request(url: &str, http_result: Result<Response, Error>) -> Result<String, HttpError> {
+    pub fn request(http_result: Result<Response, Error>) -> Result<String, HttpError> {
         match http_result {
             Ok(result) => {
                 if result.status() == 200 {

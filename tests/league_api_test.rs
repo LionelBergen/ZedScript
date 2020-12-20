@@ -5,9 +5,7 @@ use zed_script::api_structs::lol_region::Region;
 use zed_script::league_api;
 
 use std::env;
-use zed_script::api_structs::lol_account::LeagueAccount;
 use zed_script::util::http_error::HttpError;
-use zed_script::api_structs::clash::lol_team_dto::PlayerDto;
 use zed_script::api_structs::summoner::lol_summoner_dto::SummonerDTO;
 
 use serial_test::serial;
