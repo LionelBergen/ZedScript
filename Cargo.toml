@@ -1,10 +1,13 @@
 [package]
 name = "zed_script"
 version = "0.1.0"
+readme = "README.md"
 authors = ["Lionel Bergen <Lionelbergen@live.com>"]
 edition = "2018"
 description = "League Of Legends API Wrapper"
 license = "MIT OR Apache-2.0"
+repository = "https://github.com/LionelBergen/ZedScript"
+keywords = [ "riot-games", "riot", "league", "league-of-legends" ]
 
 [dependencies]
 reqwest = { version = "0.10", features = ["blocking", "json"] }
